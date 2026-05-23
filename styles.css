@@ -18,10 +18,8 @@
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 18% 8%, rgba(244, 184, 47, .24), transparent 20%),
-    radial-gradient(circle at 88% 10%, rgba(255, 244, 204, .14), transparent 18%),
-    linear-gradient(135deg, rgba(14, 45, 38, .96), rgba(23, 75, 58, .94)),
-    repeating-linear-gradient(115deg, rgba(255,255,255,.04) 0 2px, transparent 2px 42px);
+    linear-gradient(rgba(10, 25, 22, .36), rgba(10, 25, 22, .44)),
+    url("assets/detective-board-bg.png") center center / cover fixed no-repeat;
   color: var(--ink);
 }
 
@@ -125,9 +123,6 @@ button, input, textarea { font: inherit; }
 .main-content {
   position: relative;
   padding: 28px;
-  background:
-    radial-gradient(circle at 76% 8%, rgba(255, 244, 204, .26), transparent 22%),
-    radial-gradient(circle at 18% 92%, rgba(34, 147, 110, .28), transparent 26%);
   overflow: hidden;
 }
 
@@ -136,11 +131,7 @@ button, input, textarea { font: inherit; }
   position: fixed;
   inset: 58px 0 0 280px;
   pointer-events: none;
-  opacity: .22;
-  background:
-    repeating-radial-gradient(circle at 78% 18%, transparent 0 26px, rgba(255,255,255,.55) 27px 29px, transparent 30px 48px),
-    linear-gradient(115deg, transparent 0 46%, rgba(255,255,255,.28) 47%, transparent 48%),
-    linear-gradient(65deg, transparent 0 54%, rgba(255,255,255,.18) 55%, transparent 56%);
+  background: rgba(255, 244, 204, .06);
 }
 
 .page { display: none; animation: fade .22s ease; position: relative; z-index: 1; }
