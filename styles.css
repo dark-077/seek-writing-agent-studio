@@ -438,6 +438,23 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 .rubric-list span { font-weight: 800; }
 .rubric-list b { color: var(--primary); font-size: 22px; text-align: right; }
 .rubric-list small { color: var(--muted); }
+.wave-rubric div {
+  grid-template-columns: 46px 1fr 44px;
+  gap: 12px;
+}
+.wave-rubric strong {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-size: 20px;
+}
+.wave-rubric div:nth-child(2) strong { background: var(--sticker-blue); }
+.wave-rubric div:nth-child(3) strong { background: var(--sticker-green); }
+.wave-rubric div:nth-child(4) strong { background: var(--sticker-purple); }
 .rubric-total {
   display: flex;
   justify-content: space-between;
