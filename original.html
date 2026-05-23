@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SEEK Writing Agent Studio</title>
-  <link rel="stylesheet" href="styles.css?v=student-entry" />
+  <link rel="stylesheet" href="original-styles.css?v=wave-rubric" />
 </head>
 <body>
   <div class="demo-toolbar" aria-label="Classroom demo controls">
@@ -196,7 +196,7 @@
           <div class="seek-row"><div class="seek-label">E<br /><span>Explain</span></div><div><label>这个问题会让文章：</label><div class="chips"><button class="chip active">不具体</button><button class="chip">不清楚</button><button class="chip">不感人</button><button class="chip">不连贯</button></div></div></div>
           <div class="seek-row"><div class="seek-label">E<br /><span>Enhance</span></div><div><label>我准备：</label><div class="chips"><button class="chip active">加具体事件</button><button class="chip">换词语</button><button class="chip active">补品质</button><button class="chip">写启发</button></div></div></div>
           <div class="seek-row"><div class="seek-label">K<br /><span>Keep</span></div><div><label>修改后，文章变得：</label><div class="chips"><button class="chip active">更具体</button><button class="chip active">更清楚</button><button class="chip">更自然</button><button class="chip">更有感染力</button></div></div></div>
-          <div class="speaking-frame">I added <input class="inline-blank" aria-label="What did you add" /> because <input class="inline-blank" aria-label="Why did you add it" />.</div>
+          <div class="speaking-frame">I added __________________ because __________________.</div>
         </div>
         <div class="bottom-action"><button class="secondary-btn" id="printCardInline">打印这张手卡</button><button class="primary-btn" data-target="review">查看修改前后对比</button></div>
       </section>
@@ -230,23 +230,14 @@
         <div class="panel-grid two-cols">
           <article class="panel">
             <h3>Web 原型体验地址</h3>
-            <div class="entry-card">
-              <h4>教师 / 评委演示入口</h4>
-              <p>用于完整展示课堂流程、教师任务、学生端、AI 线索、SEEK 修改卡和展示备用方案。</p>
-              <div class="link-box" id="publicLink">https://dark-077.github.io/seek-writing-agent-studio/</div>
-            </div>
-            <div class="entry-card">
-              <h4>学生扫码入口</h4>
-              <p>用于课堂学生扫描二维码，只保留写作任务、初稿、AI 线索和 SEEK 修改卡。</p>
-              <div class="link-box">https://dark-077.github.io/seek-writing-agent-studio/student.html</div>
-            </div>
-            <button class="primary-btn" id="copyLink">复制教师演示链接</button>
-            <p class="muted-text">对外展示请使用 github.io 链接；学生课堂二维码建议使用 student.html 入口，不要发送 GitHub 仓库代码链接。</p>
+            <div class="link-box" id="publicLink">https://dark-077.github.io/seek-writing-agent-studio/</div>
+            <button class="primary-btn" id="copyLink">复制链接</button>
+            <p class="muted-text">发给评委、老师或同学时，请使用这个 github.io 链接。不要发送 GitHub 仓库代码链接。</p>
           </article>
           <article class="panel qr-panel">
-            <h3>学生二维码占位区</h3>
-            <div class="qr-mock" aria-label="Student QR code placeholder"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <p class="muted-text">正式提交前可将学生入口链接生成二维码，放入课件或打印材料，学生扫码后不会看到完整教师演示界面。</p>
+            <h3>二维码占位区</h3>
+            <div class="qr-mock" aria-label="QR code placeholder"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="muted-text">正式提交前可将公网链接生成二维码，放入课件或打印材料。</p>
           </article>
         </div>
         <div class="backup-plan">
@@ -258,6 +249,6 @@
       </section>
     </main>
   </div>
-  <script src="script.js"></script>
+  <script src="original-script.js"></script>
 </body>
 </html>

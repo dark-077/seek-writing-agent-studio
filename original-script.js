@@ -8,7 +8,6 @@ const nextStep = document.querySelector('#nextStep');
 const printButtons = document.querySelectorAll('#printCard, #printCardInline');
 const copyLink = document.querySelector('#copyLink');
 const publicLink = document.querySelector('#publicLink');
-const wordCountTextareas = document.querySelectorAll('[data-word-count]');
 const steps = Array.from(pages).map(page => page.id);
 let currentStep = steps.indexOf(document.querySelector('.active-page')?.id || steps[0]);
 
@@ -53,9 +52,8 @@ copyLink?.addEventListener('click', async () => {
   const text = publicLink?.textContent?.trim();
   if (!text) return;
   await navigator.clipboard.writeText(text);
-  const originalText = copyLink.textContent;
   copyLink.textContent = '已复制';
-  setTimeout(() => { copyLink.textContent = originalText; }, 1400);
+  setTimeout(() => { copyLink.textContent = '复制链接'; }, 1400);
 });
 
 chips.forEach(chip => {
@@ -69,17 +67,6 @@ clueCards.forEach(card => {
   card.addEventListener('click', () => {
     card.classList.toggle('selected');
   });
-});
-
-wordCountTextareas.forEach(textarea => {
-  const counter = document.querySelector(`#${textarea.dataset.wordCount}`);
-  if (!counter) return;
-  const updateWordCount = () => {
-    const words = textarea.value.trim().match(/[A-Za-z]+(?:[-'][A-Za-z]+)*/g) || [];
-    counter.textContent = words.length;
-  };
-  textarea.addEventListener('input', updateWordCount);
-  updateWordCount();
 });
 
 updateStepIndicator();

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEEK Student Revision Card</title>
+  <link rel="stylesheet" href="styles.css?v=student-entry" />
+</head>
+<body>
+  <div class="demo-toolbar student-toolbar" aria-label="Student classroom controls">
+    <div>
+      <strong>SEEK Student Entry</strong>
+      <span id="stepIndicator">Step 1 / 5 · 写作任务</span>
+    </div>
+    <div class="toolbar-actions">
+      <button id="prevStep" class="ghost-btn">上一步</button>
+      <button id="nextStep" class="ghost-btn">下一步</button>
+      <button id="printCard" class="print-btn">打印修改卡</button>
+    </div>
+  </div>
+
+  <div class="app-shell student-shell">
+    <aside class="sidebar student-sidebar">
+      <div class="brand">
+        <div>
+          <h1>SEEK</h1>
+          <p>Student Revision</p>
+        </div>
+      </div>
+      <nav class="nav-list" aria-label="Student sections">
+        <button class="nav-item active" data-target="student-task"><span class="nav-icon">✓</span>01 写作任务</button>
+        <button class="nav-item" data-target="student-draft"><span class="nav-icon">✎</span>02 我的初稿</button>
+        <button class="nav-item" data-target="student-clues"><span class="nav-icon">?</span>03 AI 线索</button>
+        <button class="nav-item" data-target="student-card"><span class="nav-icon">★</span>04 修改卡</button>
+        <button class="nav-item" data-target="student-review"><span class="nav-icon">↔</span>05 修改对比</button>
+      </nav>
+      <div class="detective-figure" aria-hidden="true">
+        <img src="assets/detective-character.png" alt="" />
+      </div>
+      <div class="tool-stickers" aria-hidden="true">
+        <span>⌕</span><span>✎</span><span>?</span><span>★</span>
+      </div>
+      <div class="sidebar-note">
+        <span>Student Rule</span>
+        <strong>Read clues.<br />Revise by yourself.</strong>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section id="student-task" class="page active-page has-character pose-teacher" data-title="写作任务">
+        <div class="page-character" aria-hidden="true"></div>
+        <div class="page-header">
+          <div>
+            <p class="eyebrow">Student QR Entrance</p>
+            <h2>今天的写作任务</h2>
+          </div>
+          <span class="badge">学生入口 · 简洁填写</span>
+        </div>
+        <div class="panel-grid two-cols wide-left">
+          <article class="panel writing-panel">
+            <h3>Writing Topic</h3>
+            <div class="student-task-card">
+              <strong>Write about a person who inspires you.</strong>
+              <span>80–120 words / one complete paragraph</span>
+            </div>
+            <h3>Writing Requirements</h3>
+            <ul class="check-list">
+              <li>Introduce who the person is.</li>
+              <li>Describe one specific event.</li>
+              <li>Show one clear quality.</li>
+              <li>Explain what you learned.</li>
+            </ul>
+          </article>
+          <article class="panel rubric-panel">
+            <h3>WAVE Rubric</h3>
+            <div class="rubric-list wave-rubric">
+              <div><strong>W</strong><span>Who</span><b>25</b></div>
+              <div><strong>A</strong><span>Actions</span><b>25</b></div>
+              <div><strong>V</strong><span>Values</span><b>25</b></div>
+              <div><strong>E</strong><span>Echo</span><b>25</b></div>
+            </div>
+            <div class="rubric-total"><span>Total Score</span><b>100</b></div>
+            <button class="primary-btn wide" data-target="student-draft">开始写初稿</button>
+          </article>
+        </div>
+      </section>
+
+      <section id="student-draft" class="page has-character pose-draft" data-title="我的初稿">
+        <div class="page-character" aria-hidden="true"></div>
+        <div class="page-header">
+          <div>
+            <p class="eyebrow">My First Draft</p>
+            <h2>先写自己的初稿</h2>
+          </div>
+          <span class="badge">先写后评 · 不直接套答案</span>
+        </div>
+        <div class="panel-grid two-cols wide-left">
+          <article class="panel">
+            <h3>Before AI Clues</h3>
+            <div class="mini-note">请先完成自己的段落，再查看 AI 给出的线索。AI 不会替你直接改写全文。</div>
+            <div class="teacher-tip"><b>Thinking Cue</b><span>Which part is still general? Which detail can make it more convincing?</span></div>
+          </article>
+          <article class="panel writing-panel">
+            <div class="draft-header">
+              <h3>My Draft</h3>
+              <div class="word-counter"><b id="draftWordCount">0</b><span>words</span></div>
+            </div>
+            <textarea id="draftText" data-word-count="draftWordCount" placeholder="Write your paragraph here. Try to write 80–120 words."></textarea>
+            <button class="primary-btn" data-target="student-clues">查看 AI 线索</button>
+          </article>
+        </div>
+      </section>
+
+      <section id="student-clues" class="page has-character pose-clues" data-title="AI 线索">
+        <div class="page-character" aria-hidden="true"></div>
+        <div class="page-header">
+          <div>
+            <p class="eyebrow">AI Clue Cards</p>
+            <h2>选择对你有帮助的线索</h2>
+          </div>
+          <span class="badge warning">Clues only</span>
+        </div>
+        <div class="ai-policy">
+          <span>Agent Rule</span>
+          <strong>AI gives clues only. You decide how to revise.</strong>
+        </div>
+        <div class="clue-grid student-clue-grid">
+          <article class="clue-card selected"><i>人</i><span>Person Clue</span><h3>人物背景还可以更有意义</h3><p>The person is clear, but her background can be more meaningful.</p><strong>Question: What made her different from other teachers?</strong></article>
+          <article class="clue-card selected"><i>事</i><span>Event Clue</span><h3>事件仍然比较笼统</h3><p>The event is mentioned, but it is still general.</p><strong>Question: What exactly happened after school?</strong></article>
+          <article class="clue-card"><i>品</i><span>Quality Clue</span><h3>品质需要通过行动体现</h3><p>You used patient and responsible, but the event should show these qualities more strongly.</p><strong>Question: Which action shows them?</strong></article>
+          <article class="clue-card"><i>悟</i><span>Lesson Clue</span><h3>结尾启发可以更深入</h3><p>The ending tells your feeling, but the lesson can be deeper.</p><strong>Question: How did she change your attitude?</strong></article>
+        </div>
+        <div class="bottom-action"><button class="primary-btn" data-target="student-card">填写 SEEK 修改卡</button></div>
+      </section>
+
+      <section id="student-card" class="page has-character pose-seek" data-title="修改卡">
+        <div class="page-character" aria-hidden="true"></div>
+        <div class="page-header">
+          <div>
+            <p class="eyebrow">SEEK Revision Evidence</p>
+            <h2>两分钟修改证据卡</h2>
+          </div>
+          <span class="badge success">写下修改理由</span>
+        </div>
+        <div id="printableCard" class="seek-form-card printable-card">
+          <div class="card-title"><h3>SEEK 两分钟修改证据卡</h3><p>Topic: Write about a person who inspires you.</p></div>
+          <div class="seek-row"><div class="seek-label">S<br /><span>Search</span></div><div><label>我发现的问题是：</label><input value="The event is not specific enough." /></div></div>
+          <div class="seek-row"><div class="seek-label">E<br /><span>Explain</span></div><div><label>这个问题会让文章：</label><div class="chips"><button class="chip active">不具体</button><button class="chip">不清楚</button><button class="chip">不感人</button><button class="chip">不连贯</button></div></div></div>
+          <div class="seek-row"><div class="seek-label">E<br /><span>Enhance</span></div><div><label>我准备：</label><div class="chips"><button class="chip active">加具体事件</button><button class="chip">换词语</button><button class="chip active">补品质</button><button class="chip">写启发</button></div></div></div>
+          <div class="seek-row"><div class="seek-label">K<br /><span>Keep</span></div><div><label>修改后，文章变得：</label><div class="chips"><button class="chip active">更具体</button><button class="chip active">更清楚</button><button class="chip">更自然</button><button class="chip">更有感染力</button></div></div></div>
+          <div class="speaking-frame">I added <input class="inline-blank" aria-label="What did you add" /> because <input class="inline-blank" aria-label="Why did you add it" />.</div>
+        </div>
+        <div class="bottom-action"><button class="secondary-btn" id="printCardInline">打印这张手卡</button><button class="primary-btn" data-target="student-review">查看修改对比</button></div>
+      </section>
+
+      <section id="student-review" class="page has-character pose-review" data-title="修改对比">
+        <div class="page-character" aria-hidden="true"></div>
+        <div class="page-header">
+          <div>
+            <p class="eyebrow">Before & After Review</p>
+            <h2>我的修改前后对比</h2>
+          </div>
+          <span class="badge success">Evidence-based revision</span>
+        </div>
+        <div class="compare-grid">
+          <article class="panel draft-card"><h3>Before Revision</h3><p>My first draft is here. I need to check whether the event is specific enough and whether the person's quality is shown through actions.</p></article>
+          <article class="panel revised-card"><h3>After Revision</h3><p>After reading the AI clues, I added one specific event and explained how the person helped me. Now the paragraph shows the person's quality more clearly.</p></article>
+        </div>
+        <div class="evidence-strip"><div><span>Revision Action</span><b>Added a specific event</b></div><div><span>Reason</span><b>It shows the quality more clearly</b></div><div><span>Effect</span><b>More specific and convincing</b></div></div>
+        <div class="speaking-card"><strong>Student Speaking Frame</strong><p>I added <input class="inline-blank" aria-label="What did you add" /> because <input class="inline-blank" aria-label="Why did you add it" />.</p></div>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
