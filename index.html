@@ -10,7 +10,7 @@
   <div class="demo-toolbar" aria-label="Classroom demo controls">
     <div>
       <strong>SEEK Classroom Demo</strong>
-      <span id="stepIndicator">Step 1 / 8 · 首页</span>
+      <span id="stepIndicator">Step 1 / 7 · 首页</span>
     </div>
     <div class="toolbar-actions">
       <button id="prevStep" class="ghost-btn">上一页</button>
@@ -36,7 +36,6 @@
         <button class="nav-item" data-target="seek-card">05 SEEK 修改卡</button>
         <button class="nav-item" data-target="review">06 修改对比</button>
         <button class="nav-item" data-target="share">07 展示链接</button>
-        <button class="nav-item" data-target="detective-board">08 卡通背景板</button>
       </nav>
       <div class="sidebar-note">
         <span>Teaching Principle</span>
@@ -45,6 +44,12 @@
     </aside>
 
     <main class="main-content">
+      <div class="detective-mascot" aria-hidden="true">
+        <div class="hat"></div>
+        <div class="head"><span></span></div>
+        <div class="lens"></div>
+        <div class="coat"></div>
+      </div>
       <section id="home" class="page active-page hero-page" data-title="首页">
         <div class="topbar">
           <span class="badge">外教社外语教学大赛 · 河南省赛展示原型</span>
@@ -229,64 +234,6 @@
           <div><b>Plan A</b><span>公网链接在线演示</span></div>
           <div><b>Plan B</b><span>本地 index.html 离线打开</span></div>
           <div><b>Plan C</b><span>截图或演示视频备用</span></div>
-        </div>
-      </section>
-
-      <section id="detective-board" class="page detective-page" data-title="卡通背景板">
-        <div class="detective-stage">
-          <div class="detective-hero">
-            <div class="detective-badge">SEEK CASE FILE</div>
-            <h2>WRITING DETECTIVE</h2>
-            <p>Find Problems · Follow Clues · Make Your Writing Brilliant!</p>
-          </div>
-
-          <div class="detective-layout">
-            <article class="case-file cartoon-card">
-              <span class="pin red"></span>
-              <span class="pin gold"></span>
-              <h3>CASE FILE</h3>
-              <small>TOPIC</small>
-              <p>How can we write about an inspiring person clearly?</p>
-              <div class="case-stamp">AI CLUES ONLY</div>
-            </article>
-
-            <article class="manuscript cartoon-card">
-              <h3>Student's Manuscript</h3>
-              <p>The person who inspires me most is my English teacher. She is patient and responsible. She helped us after class. I respect her very much.</p>
-            </article>
-
-            <article class="clue-board cartoon-card">
-              <h3>Clues from AI Detective</h3>
-              <div><b>Clue 1 · Missing Evidence</b><span>What exact event can show her responsibility?</span></div>
-              <div><b>Clue 2 · Weak Logic</b><span>Why did this event change your attitude?</span></div>
-              <div><b>Clue 3 · Common Words</b><span>Can “good teacher” become more specific?</span></div>
-            </article>
-
-            <article class="toolbox cartoon-card">
-              <h3>Revision Toolbox</h3>
-              <div class="tool-tabs"><span>Structure</span><span>Vocabulary</span><span>Logic</span></div>
-              <ul>
-                <li>Add a specific after-school event.</li>
-                <li>Use actions to show qualities.</li>
-                <li>End with a clear lesson.</li>
-              </ul>
-              <strong>GREAT JOB!</strong>
-            </article>
-
-            <article class="revised-note cartoon-card">
-              <h3>Your Revised Paragraph</h3>
-              <p>One evening before the exam, Ms. Lin stayed for nearly an hour, listened to us patiently, and helped us improve sentence by sentence. From her, I learned that a responsible teacher helps students discover confidence.</p>
-              <div class="case-solved">CASE SOLVED!</div>
-            </article>
-          </div>
-
-          <div class="detective-flow">
-            <div><b>1</b><span>WRITE</span><em>Write your first draft.</em></div>
-            <div><b>2</b><span>DETECT</span><em>Find problems with AI clues.</em></div>
-            <div><b>3</b><span>THINK</span><em>Analyze causes.</em></div>
-            <div><b>4</b><span>IMPROVE</span><em>Revise by yourself.</em></div>
-            <div><b>5</b><span>SHINE</span><em>Share your best version.</em></div>
-          </div>
         </div>
       </section>
     </main>
