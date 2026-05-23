@@ -220,6 +220,31 @@ button, input, textarea { font: inherit; }
 
 .page { display: none; animation: fade .22s ease; position: relative; z-index: 1; }
 .active-page { display: block; }
+.has-character { padding-bottom: 96px; }
+
+.page-character {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: 126px;
+  height: 150px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .94;
+  background-image: url("assets/character-poses.png");
+  background-repeat: no-repeat;
+  background-size: 768px 512px;
+  filter: drop-shadow(0 16px 18px rgba(90,42,20,.18));
+}
+
+.page > :not(.page-character) { position: relative; z-index: 1; }
+.pose-home .page-character { right: 28px; bottom: 8px; width: 150px; height: 170px; background-position: -18px -28px; }
+.pose-teacher .page-character { right: 4px; bottom: 8px; width: 132px; height: 160px; background-position: -182px -30px; }
+.pose-draft .page-character { right: 10px; bottom: 2px; width: 130px; height: 160px; background-position: -340px -28px; }
+.pose-clues .page-character { right: 8px; bottom: 4px; width: 132px; height: 160px; background-position: -504px -30px; }
+.pose-seek .page-character { right: 8px; bottom: 0; width: 132px; height: 160px; background-position: -26px -220px; }
+.pose-review .page-character { right: 10px; bottom: 2px; width: 132px; height: 160px; background-position: -190px -220px; }
+.pose-share .page-character { right: 8px; bottom: 0; width: 132px; height: 160px; background-position: -354px -220px; }
 
 @keyframes fade { from { opacity: .45; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -399,20 +424,19 @@ input, textarea {
 textarea { min-height: 270px; resize: vertical; line-height: 1.7; }
 input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(31,111,159,.12); }
 
-.rubric-list { display: grid; gap: 10px; }
-.rubric-list div {
-  display: grid;
-  grid-template-columns: 1fr 44px;
-  gap: 4px;
-  align-items: center;
-  padding: 13px 14px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
+.rubric-image-card {
+  overflow: hidden;
+  border-radius: 20px;
   background: #fff8df;
+  border: 1px solid rgba(134, 91, 26, .18);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5), 0 14px 24px rgba(90,42,20,.08);
 }
-.rubric-list span { font-weight: 800; }
-.rubric-list b { color: var(--primary); font-size: 22px; text-align: right; }
-.rubric-list small { color: var(--muted); }
+
+.rubric-image-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
 .check-list { margin: 0; padding-left: 20px; line-height: 2; color: var(--muted); }
 .mini-note { margin-top: 24px; padding: 14px; border-radius: 16px; background: #fff2cc; color: #744800; font-weight: 700; }
@@ -708,6 +732,8 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 @media (max-width: 700px) {
   .main-content { padding: 16px; }
   .hero-copy { padding: 26px; }
+  .has-character { padding-bottom: 0; }
+  .page-character { display: none; }
   .clue-grid, .evidence-strip { grid-template-columns: 1fr; }
   .page-header, .demo-toolbar, .card-title, .ai-policy, .teacher-tip { align-items: flex-start; gap: 12px; flex-direction: column; }
   .toolbar-actions { width: 100%; justify-content: flex-start; }

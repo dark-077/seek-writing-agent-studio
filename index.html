@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SEEK Writing Agent Studio</title>
-  <link rel="stylesheet" href="styles.css?v=student-stickers" />
+  <link rel="stylesheet" href="styles.css?v=multi-poses-rubric" />
 </head>
 <body>
   <div class="demo-toolbar" aria-label="Classroom demo controls">
@@ -49,7 +49,8 @@
     </aside>
 
     <main class="main-content">
-      <section id="home" class="page active-page hero-page" data-title="首页">
+      <section id="home" class="page active-page hero-page has-character pose-home" data-title="首页">
+        <div class="page-character" aria-hidden="true"></div>
         <div class="topbar">
           <span class="badge">外教社外语教学大赛 · 河南省赛展示原型</span>
           <span class="status-dot">Hybrid Prototype</span>
@@ -86,7 +87,8 @@
         </div>
       </section>
 
-      <section id="teacher" class="page" data-title="教师任务">
+      <section id="teacher" class="page has-character pose-teacher" data-title="教师任务">
+        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
             <p class="eyebrow">Teacher Dashboard</p>
@@ -113,21 +115,18 @@
             <label>AI Feedback Mode</label>
             <input value="Clue-based feedback; no direct rewriting" />
           </article>
-          <article class="panel">
-            <h3>Rubric Dimensions</h3>
-            <div class="rubric-list">
-              <div><span>Person</span><b>20</b><small>人物清楚</small></div>
-              <div><span>Event</span><b>25</b><small>事件具体</small></div>
-              <div><span>Quality</span><b>20</b><small>品质明确</small></div>
-              <div><span>Lesson</span><b>20</b><small>启发自然</small></div>
-              <div><span>Language</span><b>15</b><small>语言准确</small></div>
+          <article class="panel rubric-panel">
+            <h3>Writing Rubric</h3>
+            <div class="rubric-image-card">
+              <img src="assets/rubric-reference.png" alt="Writing rubric scoring criteria" />
             </div>
             <button class="primary-btn wide" data-target="draft">发布任务并进入学生端</button>
           </article>
         </div>
       </section>
 
-      <section id="draft" class="page" data-title="学生初稿">
+      <section id="draft" class="page has-character pose-draft" data-title="学生初稿">
+        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
             <p class="eyebrow">Student Workspace</p>
@@ -155,7 +154,8 @@
         </div>
       </section>
 
-      <section id="clues" class="page" data-title="AI 线索卡">
+      <section id="clues" class="page has-character pose-clues" data-title="AI 线索卡">
+        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
             <p class="eyebrow">AI Clue Cards</p>
@@ -177,7 +177,8 @@
         <div class="bottom-action"><button class="primary-btn" data-target="seek-card">填写 SEEK 修改证据卡</button></div>
       </section>
 
-      <section id="seek-card" class="page" data-title="SEEK 修改卡">
+      <section id="seek-card" class="page has-character pose-seek" data-title="SEEK 修改卡">
+        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
             <p class="eyebrow">SEEK Revision Evidence</p>
@@ -196,7 +197,8 @@
         <div class="bottom-action"><button class="secondary-btn" id="printCardInline">打印这张手卡</button><button class="primary-btn" data-target="review">查看修改前后对比</button></div>
       </section>
 
-      <section id="review" class="page" data-title="修改对比">
+      <section id="review" class="page has-character pose-review" data-title="修改对比">
+        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
             <p class="eyebrow">Before & After Review</p>
@@ -212,7 +214,8 @@
         <div class="speaking-card"><strong>Student Speaking Frame</strong><p>I added a specific event because it can show Ms. Lin’s responsibility more clearly.</p></div>
       </section>
 
-      <section id="share" class="page" data-title="展示链接">
+      <section id="share" class="page has-character pose-share" data-title="展示链接">
+        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
             <p class="eyebrow">Contest Sharing Page</p>
