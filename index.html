@@ -7,6 +7,18 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="demo-toolbar" aria-label="Classroom demo controls">
+    <div>
+      <strong>SEEK Classroom Demo</strong>
+      <span id="stepIndicator">Step 1 / 7 · 首页</span>
+    </div>
+    <div class="toolbar-actions">
+      <button id="prevStep" class="ghost-btn">上一页</button>
+      <button id="nextStep" class="ghost-btn">下一页</button>
+      <button id="printCard" class="print-btn">打印修改卡</button>
+    </div>
+  </div>
+
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
@@ -23,48 +35,61 @@
         <button class="nav-item" data-target="clues">04 AI 线索卡</button>
         <button class="nav-item" data-target="seek-card">05 SEEK 修改卡</button>
         <button class="nav-item" data-target="review">06 修改对比</button>
+        <button class="nav-item" data-target="share">07 展示链接</button>
       </nav>
       <div class="sidebar-note">
-        <span>Core Idea</span>
+        <span>Teaching Principle</span>
         <strong>AI gives clues.<br />Students make revisions.</strong>
       </div>
     </aside>
 
     <main class="main-content">
-      <section id="home" class="page active-page hero-page">
+      <section id="home" class="page active-page hero-page" data-title="首页">
         <div class="topbar">
-          <span class="badge">省赛展示 · Web 静态原型</span>
-          <span class="status-dot">Ready for Demo</span>
+          <span class="badge">外教社外语教学大赛 · 河南省赛展示原型</span>
+          <span class="status-dot">Hybrid Prototype</span>
         </div>
         <div class="hero-grid">
           <div class="hero-copy">
             <p class="eyebrow">College English Writing · Agent-supported Classroom</p>
             <h2>SEEK 英语写作智能体课堂平台</h2>
-            <p class="hero-text">一个面向大学英语写作课堂的 Web 平台：AI 不直接代写，而是提供线索，引导学生完成有理由、有证据的写作修改。</p>
+            <p class="hero-text">面向大学英语人物事迹类写作课的混合原型：Web 静态原型展示课堂流程，纸质 SEEK 修改卡承载学生真实互动，AI 线索卡帮助学生完成有理由、有证据的修改。</p>
             <div class="hero-actions">
               <button class="primary-btn" data-target="teacher">开始课堂演示</button>
-              <button class="secondary-btn" data-target="clues">查看 AI 线索卡</button>
+              <button class="secondary-btn" data-target="share">获取展示链接</button>
+            </div>
+            <div class="value-row">
+              <div><b>Teacher-led</b><span>教师设定任务和评价标准</span></div>
+              <div><b>Student-owned</b><span>学生完成初稿和修改</span></div>
+              <div><b>AI-supported</b><span>AI 只提供线索</span></div>
             </div>
           </div>
           <div class="model-card">
             <h3>SEEK Revision Model</h3>
             <div class="seek-steps">
-              <div><b>S</b><span>Search clues</span><em>搜线索</em></div>
-              <div><b>E</b><span>Explain causes</span><em>析原因</em></div>
-              <div><b>E</b><span>Enhance writing</span><em>优表达</em></div>
-              <div><b>K</b><span>Keep evidence</span><em>留证据</em></div>
+              <div><b>S</b><span>Search clues</span><em>搜线索：发现问题</em></div>
+              <div><b>E</b><span>Explain causes</span><em>析原因：说明影响</em></div>
+              <div><b>E</b><span>Enhance writing</span><em>优表达：完成修改</em></div>
+              <div><b>K</b><span>Keep evidence</span><em>留证据：展示提升</em></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="teacher" class="page">
+      <section id="teacher" class="page" data-title="教师任务">
         <div class="page-header">
           <div>
             <p class="eyebrow">Teacher Dashboard</p>
             <h2>创建人物事迹类写作任务</h2>
           </div>
           <span class="badge">教师主导 · 任务可控</span>
+        </div>
+        <div class="lesson-flow">
+          <div class="flow-item active"><b>1</b><span>Set Task</span></div>
+          <div class="flow-item"><b>2</b><span>Write Draft</span></div>
+          <div class="flow-item"><b>3</b><span>Get Clues</span></div>
+          <div class="flow-item"><b>4</b><span>Revise</span></div>
+          <div class="flow-item"><b>5</b><span>Review</span></div>
         </div>
         <div class="panel-grid two-cols">
           <article class="panel">
@@ -92,7 +117,7 @@
         </div>
       </section>
 
-      <section id="draft" class="page">
+      <section id="draft" class="page" data-title="学生初稿">
         <div class="page-header">
           <div>
             <p class="eyebrow">Student Workspace</p>
@@ -110,6 +135,7 @@
               <li>Explain what you learned.</li>
             </ul>
             <div class="mini-note">课堂提示：先完成自己的初稿，再请求 AI 给线索。</div>
+            <div class="teacher-tip"><b>Teacher Cue</b><span>Ask students: What is still general in this draft?</span></div>
           </article>
           <article class="panel writing-panel">
             <h3>My First Draft</h3>
@@ -119,7 +145,7 @@
         </div>
       </section>
 
-      <section id="clues" class="page">
+      <section id="clues" class="page" data-title="AI 线索卡">
         <div class="page-header">
           <div>
             <p class="eyebrow">AI Clue Cards</p>
@@ -127,87 +153,40 @@
           </div>
           <span class="badge warning">No full rewriting</span>
         </div>
+        <div class="ai-policy">
+          <span>Agent Rule</span>
+          <strong>Do not rewrite the paragraph directly. Give clue-based feedback only.</strong>
+        </div>
         <div class="clue-grid">
-          <article class="clue-card selected">
-            <span>Person Clue</span>
-            <h3>人物背景还可以更有意义</h3>
-            <p>The person is clear, but her background can be more meaningful.</p>
-            <strong>Question: What made her different from other teachers?</strong>
-          </article>
-          <article class="clue-card selected">
-            <span>Event Clue</span>
-            <h3>事件仍然比较笼统</h3>
-            <p>The event is mentioned, but it is still general.</p>
-            <strong>Question: What exactly happened after school?</strong>
-          </article>
-          <article class="clue-card">
-            <span>Quality Clue</span>
-            <h3>品质需要通过行动体现</h3>
-            <p>You used patient and responsible, but the event should show these qualities more strongly.</p>
-            <strong>Question: Which action shows them?</strong>
-          </article>
-          <article class="clue-card">
-            <span>Lesson Clue</span>
-            <h3>结尾启发可以更深入</h3>
-            <p>The ending tells your feeling, but the lesson can be deeper.</p>
-            <strong>Question: How did she change your attitude?</strong>
-          </article>
-          <article class="clue-card">
-            <span>Language Clue</span>
-            <h3>表达准确但略普通</h3>
-            <p>Some expressions are correct but common.</p>
-            <strong>Question: Can you replace “good teacher” with a more specific expression?</strong>
-          </article>
+          <article class="clue-card selected"><span>Person Clue</span><h3>人物背景还可以更有意义</h3><p>The person is clear, but her background can be more meaningful.</p><strong>Question: What made her different from other teachers?</strong></article>
+          <article class="clue-card selected"><span>Event Clue</span><h3>事件仍然比较笼统</h3><p>The event is mentioned, but it is still general.</p><strong>Question: What exactly happened after school?</strong></article>
+          <article class="clue-card"><span>Quality Clue</span><h3>品质需要通过行动体现</h3><p>You used patient and responsible, but the event should show these qualities more strongly.</p><strong>Question: Which action shows them?</strong></article>
+          <article class="clue-card"><span>Lesson Clue</span><h3>结尾启发可以更深入</h3><p>The ending tells your feeling, but the lesson can be deeper.</p><strong>Question: How did she change your attitude?</strong></article>
+          <article class="clue-card"><span>Language Clue</span><h3>表达准确但略普通</h3><p>Some expressions are correct but common.</p><strong>Question: Can you replace “good teacher” with a more specific expression?</strong></article>
         </div>
-        <div class="bottom-action">
-          <button class="primary-btn" data-target="seek-card">填写 SEEK 修改证据卡</button>
-        </div>
+        <div class="bottom-action"><button class="primary-btn" data-target="seek-card">填写 SEEK 修改证据卡</button></div>
       </section>
 
-      <section id="seek-card" class="page">
+      <section id="seek-card" class="page" data-title="SEEK 修改卡">
         <div class="page-header">
           <div>
             <p class="eyebrow">SEEK Revision Evidence</p>
             <h2>两分钟修改证据卡</h2>
           </div>
-          <span class="badge">可网页填写 · 可打印成手卡</span>
+          <span class="badge">网页填写 · 纸质手卡同步</span>
         </div>
-        <div class="seek-form-card">
-          <div class="seek-row">
-            <div class="seek-label">S<br /><span>Search</span></div>
-            <div>
-              <label>我发现的问题是：</label>
-              <input value="The event is not specific enough." />
-            </div>
-          </div>
-          <div class="seek-row">
-            <div class="seek-label">E<br /><span>Explain</span></div>
-            <div>
-              <label>这个问题会让文章：</label>
-              <div class="chips"><button class="chip active">不具体</button><button class="chip">不清楚</button><button class="chip">不感人</button><button class="chip">不连贯</button></div>
-            </div>
-          </div>
-          <div class="seek-row">
-            <div class="seek-label">E<br /><span>Enhance</span></div>
-            <div>
-              <label>我准备：</label>
-              <div class="chips"><button class="chip active">加具体事件</button><button class="chip">换词语</button><button class="chip active">补品质</button><button class="chip">写启发</button></div>
-            </div>
-          </div>
-          <div class="seek-row">
-            <div class="seek-label">K<br /><span>Keep</span></div>
-            <div>
-              <label>修改后，文章变得：</label>
-              <div class="chips"><button class="chip active">更具体</button><button class="chip active">更清楚</button><button class="chip">更自然</button><button class="chip">更有感染力</button></div>
-            </div>
-          </div>
+        <div id="printableCard" class="seek-form-card printable-card">
+          <div class="card-title"><h3>SEEK 两分钟修改证据卡</h3><p>Topic: Write about a person who inspires you.</p></div>
+          <div class="seek-row"><div class="seek-label">S<br /><span>Search</span></div><div><label>我发现的问题是：</label><input value="The event is not specific enough." /></div></div>
+          <div class="seek-row"><div class="seek-label">E<br /><span>Explain</span></div><div><label>这个问题会让文章：</label><div class="chips"><button class="chip active">不具体</button><button class="chip">不清楚</button><button class="chip">不感人</button><button class="chip">不连贯</button></div></div></div>
+          <div class="seek-row"><div class="seek-label">E<br /><span>Enhance</span></div><div><label>我准备：</label><div class="chips"><button class="chip active">加具体事件</button><button class="chip">换词语</button><button class="chip active">补品质</button><button class="chip">写启发</button></div></div></div>
+          <div class="seek-row"><div class="seek-label">K<br /><span>Keep</span></div><div><label>修改后，文章变得：</label><div class="chips"><button class="chip active">更具体</button><button class="chip active">更清楚</button><button class="chip">更自然</button><button class="chip">更有感染力</button></div></div></div>
+          <div class="speaking-frame">I added __________________ because __________________.</div>
         </div>
-        <div class="bottom-action">
-          <button class="primary-btn" data-target="review">查看修改前后对比</button>
-        </div>
+        <div class="bottom-action"><button class="secondary-btn" id="printCardInline">打印这张手卡</button><button class="primary-btn" data-target="review">查看修改前后对比</button></div>
       </section>
 
-      <section id="review" class="page">
+      <section id="review" class="page" data-title="修改对比">
         <div class="page-header">
           <div>
             <p class="eyebrow">Before & After Review</p>
@@ -216,23 +195,39 @@
           <span class="badge success">Evidence-based revision</span>
         </div>
         <div class="compare-grid">
-          <article class="panel draft-card">
-            <h3>Before Revision</h3>
-            <p>The person who inspires me most is my high school English teacher, Ms. Lin. She was always patient and responsible. She often encouraged us when we felt nervous before exams. I still remember that she stayed in the classroom after school to help some students with their English. She also told us that learning English was not only for tests, but also for seeing a bigger world. Because of her, I became more confident in English learning. I think she is a good teacher and I respect her very much.</p>
+          <article class="panel draft-card"><h3>Before Revision</h3><p>The person who inspires me most is my high school English teacher, Ms. Lin. She was always patient and responsible. She often encouraged us when we felt nervous before exams. I still remember that she stayed in the classroom after school to help some students with their English. She also told us that learning English was not only for tests, but also for seeing a bigger world. Because of her, I became more confident in English learning. I think she is a good teacher and I respect her very much.</p></article>
+          <article class="panel revised-card"><h3>After Revision</h3><p>The person who has influenced me most is my high school English teacher, Ms. Lin. At that time, I was afraid of speaking English in public because I often worried about making mistakes. One evening before the final exam, she noticed that several of us were still confused about the speaking task. Instead of simply giving us answers, she stayed in the classroom for nearly an hour, listened to each student patiently, and helped us improve our expressions sentence by sentence. From her, I learned that a responsible teacher does not just teach a subject; she helps students discover confidence in themselves.</p></article>
+        </div>
+        <div class="evidence-strip"><div><span>Revision Action</span><b>Added a specific event</b></div><div><span>Reason</span><b>It shows responsibility more clearly</b></div><div><span>Effect</span><b>More specific and convincing</b></div></div>
+        <div class="speaking-card"><strong>Student Speaking Frame</strong><p>I added a specific event because it can show Ms. Lin’s responsibility more clearly.</p></div>
+      </section>
+
+      <section id="share" class="page" data-title="展示链接">
+        <div class="page-header">
+          <div>
+            <p class="eyebrow">Contest Sharing Page</p>
+            <h2>公网展示链接与课堂备用方案</h2>
+          </div>
+          <span class="badge success">Ready to Share</span>
+        </div>
+        <div class="panel-grid two-cols">
+          <article class="panel">
+            <h3>Web 原型体验地址</h3>
+            <div class="link-box" id="publicLink">https://dark-077.github.io/seek-writing-agent-studio/</div>
+            <button class="primary-btn" id="copyLink">复制链接</button>
+            <p class="muted-text">发给评委、老师或同学时，请使用这个 github.io 链接。不要发送 GitHub 仓库代码链接。</p>
           </article>
-          <article class="panel revised-card">
-            <h3>After Revision</h3>
-            <p>The person who has influenced me most is my high school English teacher, Ms. Lin. At that time, I was afraid of speaking English in public because I often worried about making mistakes. One evening before the final exam, she noticed that several of us were still confused about the speaking task. Instead of simply giving us answers, she stayed in the classroom for nearly an hour, listened to each student patiently, and helped us improve our expressions sentence by sentence. From her, I learned that a responsible teacher does not just teach a subject; she helps students discover confidence in themselves.</p>
+          <article class="panel qr-panel">
+            <h3>二维码占位区</h3>
+            <div class="qr-mock" aria-label="QR code placeholder"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="muted-text">正式提交前可将公网链接生成二维码，放入课件或打印材料。</p>
           </article>
         </div>
-        <div class="evidence-strip">
-          <div><span>Revision Action</span><b>Added a specific event</b></div>
-          <div><span>Reason</span><b>It shows responsibility more clearly</b></div>
-          <div><span>Effect</span><b>More specific and convincing</b></div>
-        </div>
-        <div class="speaking-card">
-          <strong>Student Speaking Frame</strong>
-          <p>I added a specific event because it can show Ms. Lin’s responsibility more clearly.</p>
+        <div class="backup-plan">
+          <h3>现场备用方案</h3>
+          <div><b>Plan A</b><span>公网链接在线演示</span></div>
+          <div><b>Plan B</b><span>本地 index.html 离线打开</span></div>
+          <div><b>Plan C</b><span>截图或演示视频备用</span></div>
         </div>
       </section>
     </main>
