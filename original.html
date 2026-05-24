@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SEEK Writing Agent Studio</title>
-  <link rel="stylesheet" href="original-styles.css?v=wave-rubric" />
+  <link rel="stylesheet" href="original-styles.css" />
 </head>
 <body>
   <div class="demo-toolbar" aria-label="Classroom demo controls">
@@ -22,26 +22,21 @@
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
+        <div class="brand-mark">S</div>
         <div>
           <h1>SEEK</h1>
           <p>Writing Agent Studio</p>
         </div>
       </div>
       <nav class="nav-list" aria-label="Prototype sections">
-        <button class="nav-item active" data-target="home"><span class="nav-icon">⌂</span>01 首页</button>
-        <button class="nav-item" data-target="teacher"><span class="nav-icon">✓</span>02 教师任务</button>
-        <button class="nav-item" data-target="draft"><span class="nav-icon">✎</span>03 学生初稿</button>
-        <button class="nav-item" data-target="clues"><span class="nav-icon">?</span>04 AI 线索卡</button>
-        <button class="nav-item" data-target="seek-card"><span class="nav-icon">★</span>05 SEEK 修改卡</button>
-        <button class="nav-item" data-target="review"><span class="nav-icon">↔</span>06 修改对比</button>
-        <button class="nav-item" data-target="share"><span class="nav-icon">↗</span>07 展示链接</button>
+        <button class="nav-item active" data-target="home">01 首页</button>
+        <button class="nav-item" data-target="teacher">02 教师任务</button>
+        <button class="nav-item" data-target="draft">03 学生初稿</button>
+        <button class="nav-item" data-target="clues">04 AI 线索卡</button>
+        <button class="nav-item" data-target="seek-card">05 SEEK 修改卡</button>
+        <button class="nav-item" data-target="review">06 修改对比</button>
+        <button class="nav-item" data-target="share">07 展示链接</button>
       </nav>
-      <div class="detective-figure" aria-hidden="true">
-        <img src="assets/detective-character.png" alt="" />
-      </div>
-      <div class="tool-stickers" aria-hidden="true">
-        <span>⌕</span><span>✎</span><span>?</span><span>★</span>
-      </div>
       <div class="sidebar-note">
         <span>Teaching Principle</span>
         <strong>AI gives clues.<br />Students make revisions.</strong>
@@ -49,8 +44,7 @@
     </aside>
 
     <main class="main-content">
-      <section id="home" class="page active-page hero-page has-character pose-home" data-title="首页">
-        <div class="page-character" aria-hidden="true"></div>
+      <section id="home" class="page active-page hero-page" data-title="首页">
         <div class="topbar">
           <span class="badge">外教社外语教学大赛 · 河南省赛展示原型</span>
           <span class="status-dot">Hybrid Prototype</span>
@@ -60,11 +54,6 @@
             <p class="eyebrow">College English Writing · Agent-supported Classroom</p>
             <h2>SEEK 英语写作智能体课堂平台</h2>
             <p class="hero-text">面向大学英语人物事迹类写作课的混合原型：Web 静态原型展示课堂流程，纸质 SEEK 修改卡承载学生真实互动，AI 线索卡帮助学生完成有理由、有证据的修改。</p>
-            <div class="mission-tags" aria-label="Classroom mission tags">
-              <span><i>01</i> Find clues</span>
-              <span><i>02</i> Explain why</span>
-              <span><i>03</i> Revise better</span>
-            </div>
             <div class="hero-actions">
               <button class="primary-btn" data-target="teacher">开始课堂演示</button>
               <button class="secondary-btn" data-target="share">获取展示链接</button>
@@ -78,17 +67,16 @@
           <div class="model-card">
             <h3>SEEK Revision Model</h3>
             <div class="seek-steps">
-              <div><i>⌕</i><b>S</b><span>Search clues</span><em>搜线索：发现问题</em></div>
-              <div><i>?</i><b>E</b><span>Explain causes</span><em>析原因：说明影响</em></div>
-              <div><i>✎</i><b>E</b><span>Enhance writing</span><em>优表达：完成修改</em></div>
-              <div><i>★</i><b>K</b><span>Keep evidence</span><em>留证据：展示提升</em></div>
+              <div><b>S</b><span>Search clues</span><em>搜线索：发现问题</em></div>
+              <div><b>E</b><span>Explain causes</span><em>析原因：说明影响</em></div>
+              <div><b>E</b><span>Enhance writing</span><em>优表达：完成修改</em></div>
+              <div><b>K</b><span>Keep evidence</span><em>留证据：展示提升</em></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="teacher" class="page has-character pose-teacher" data-title="教师任务">
-        <div class="page-character" aria-hidden="true"></div>
+      <section id="teacher" class="page" data-title="教师任务">
         <div class="page-header">
           <div>
             <p class="eyebrow">Teacher Dashboard</p>
@@ -97,11 +85,11 @@
           <span class="badge">教师主导 · 任务可控</span>
         </div>
         <div class="lesson-flow">
-          <div class="flow-item active"><b>✓</b><span>Set Task</span></div>
-          <div class="flow-item"><b>✎</b><span>Write Draft</span></div>
-          <div class="flow-item"><b>?</b><span>Get Clues</span></div>
-          <div class="flow-item"><b>↻</b><span>Revise</span></div>
-          <div class="flow-item"><b>★</b><span>Review</span></div>
+          <div class="flow-item active"><b>1</b><span>Set Task</span></div>
+          <div class="flow-item"><b>2</b><span>Write Draft</span></div>
+          <div class="flow-item"><b>3</b><span>Get Clues</span></div>
+          <div class="flow-item"><b>4</b><span>Revise</span></div>
+          <div class="flow-item"><b>5</b><span>Review</span></div>
         </div>
         <div class="panel-grid two-cols">
           <article class="panel">
@@ -115,22 +103,21 @@
             <label>AI Feedback Mode</label>
             <input value="Clue-based feedback; no direct rewriting" />
           </article>
-          <article class="panel rubric-panel">
+          <article class="panel">
             <h3>Rubric Dimensions</h3>
-            <div class="rubric-list wave-rubric">
-              <div><strong>W</strong><span>Who</span><b>25</b></div>
-              <div><strong>A</strong><span>Actions</span><b>25</b></div>
-              <div><strong>V</strong><span>Values</span><b>25</b></div>
-              <div><strong>E</strong><span>Echo</span><b>25</b></div>
+            <div class="rubric-list">
+              <div><span>Person</span><b>20</b><small>人物清楚</small></div>
+              <div><span>Event</span><b>25</b><small>事件具体</small></div>
+              <div><span>Quality</span><b>20</b><small>品质明确</small></div>
+              <div><span>Lesson</span><b>20</b><small>启发自然</small></div>
+              <div><span>Language</span><b>15</b><small>语言准确</small></div>
             </div>
-            <div class="rubric-total"><span>Total Score</span><b>100</b></div>
             <button class="primary-btn wide" data-target="draft">发布任务并进入学生端</button>
           </article>
         </div>
       </section>
 
-      <section id="draft" class="page has-character pose-draft" data-title="学生初稿">
-        <div class="page-character" aria-hidden="true"></div>
+      <section id="draft" class="page" data-title="学生初稿">
         <div class="page-header">
           <div>
             <p class="eyebrow">Student Workspace</p>
@@ -158,8 +145,7 @@
         </div>
       </section>
 
-      <section id="clues" class="page has-character pose-clues" data-title="AI 线索卡">
-        <div class="page-character" aria-hidden="true"></div>
+      <section id="clues" class="page" data-title="AI 线索卡">
         <div class="page-header">
           <div>
             <p class="eyebrow">AI Clue Cards</p>
@@ -172,17 +158,16 @@
           <strong>Do not rewrite the paragraph directly. Give clue-based feedback only.</strong>
         </div>
         <div class="clue-grid">
-          <article class="clue-card selected"><i>人</i><span>Person Clue</span><h3>人物背景还可以更有意义</h3><p>The person is clear, but her background can be more meaningful.</p><strong>Question: What made her different from other teachers?</strong></article>
-          <article class="clue-card selected"><i>事</i><span>Event Clue</span><h3>事件仍然比较笼统</h3><p>The event is mentioned, but it is still general.</p><strong>Question: What exactly happened after school?</strong></article>
-          <article class="clue-card"><i>品</i><span>Quality Clue</span><h3>品质需要通过行动体现</h3><p>You used patient and responsible, but the event should show these qualities more strongly.</p><strong>Question: Which action shows them?</strong></article>
-          <article class="clue-card"><i>悟</i><span>Lesson Clue</span><h3>结尾启发可以更深入</h3><p>The ending tells your feeling, but the lesson can be deeper.</p><strong>Question: How did she change your attitude?</strong></article>
-          <article class="clue-card"><i>词</i><span>Language Clue</span><h3>表达准确但略普通</h3><p>Some expressions are correct but common.</p><strong>Question: Can you replace “good teacher” with a more specific expression?</strong></article>
+          <article class="clue-card selected"><span>Person Clue</span><h3>人物背景还可以更有意义</h3><p>The person is clear, but her background can be more meaningful.</p><strong>Question: What made her different from other teachers?</strong></article>
+          <article class="clue-card selected"><span>Event Clue</span><h3>事件仍然比较笼统</h3><p>The event is mentioned, but it is still general.</p><strong>Question: What exactly happened after school?</strong></article>
+          <article class="clue-card"><span>Quality Clue</span><h3>品质需要通过行动体现</h3><p>You used patient and responsible, but the event should show these qualities more strongly.</p><strong>Question: Which action shows them?</strong></article>
+          <article class="clue-card"><span>Lesson Clue</span><h3>结尾启发可以更深入</h3><p>The ending tells your feeling, but the lesson can be deeper.</p><strong>Question: How did she change your attitude?</strong></article>
+          <article class="clue-card"><span>Language Clue</span><h3>表达准确但略普通</h3><p>Some expressions are correct but common.</p><strong>Question: Can you replace “good teacher” with a more specific expression?</strong></article>
         </div>
         <div class="bottom-action"><button class="primary-btn" data-target="seek-card">填写 SEEK 修改证据卡</button></div>
       </section>
 
-      <section id="seek-card" class="page has-character pose-seek" data-title="SEEK 修改卡">
-        <div class="page-character" aria-hidden="true"></div>
+      <section id="seek-card" class="page" data-title="SEEK 修改卡">
         <div class="page-header">
           <div>
             <p class="eyebrow">SEEK Revision Evidence</p>
@@ -201,8 +186,7 @@
         <div class="bottom-action"><button class="secondary-btn" id="printCardInline">打印这张手卡</button><button class="primary-btn" data-target="review">查看修改前后对比</button></div>
       </section>
 
-      <section id="review" class="page has-character pose-review" data-title="修改对比">
-        <div class="page-character" aria-hidden="true"></div>
+      <section id="review" class="page" data-title="修改对比">
         <div class="page-header">
           <div>
             <p class="eyebrow">Before & After Review</p>
@@ -218,8 +202,7 @@
         <div class="speaking-card"><strong>Student Speaking Frame</strong><p>I added a specific event because it can show Ms. Lin’s responsibility more clearly.</p></div>
       </section>
 
-      <section id="share" class="page has-character pose-share" data-title="展示链接">
-        <div class="page-character" aria-hidden="true"></div>
+      <section id="share" class="page" data-title="展示链接">
         <div class="page-header">
           <div>
             <p class="eyebrow">Contest Sharing Page</p>
