@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Battle · Clue Hunter Challenge</title>
+  <style>
+    :root {
+      --navy: #071a3d;
+      --navy-2: #102a5c;
+      --red: #e63946;
+      --red-dark: #9f1d2a;
+      --blue: #2563eb;
+      --blue-dark: #153c9f;
+      --gold: #ffd166;
+      --cyan: #00f5d4;
+      --white: #ffffff;
+      --soft: rgba(255, 255, 255, .12);
+      font-family: Inter, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(230, 57, 70, .32), transparent 24%),
+        radial-gradient(circle at 82% 22%, rgba(37, 99, 235, .36), transparent 26%),
+        radial-gradient(circle at 50% 92%, rgba(255, 209, 102, .22), transparent 26%),
+        linear-gradient(135deg, #071a3d 0%, #102a5c 52%, #071a3d 100%);
+      overflow: hidden;
+    }
+
+    button { font: inherit; }
+
+    .game {
+      min-height: 100vh;
+      padding: 34px;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .game::before,
+    .game::after {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border: 2px solid rgba(255, 255, 255, .12);
+      border-radius: 34px;
+      pointer-events: none;
+    }
+
+    .game::after {
+      inset: 42px;
+      border-style: dashed;
+      border-color: rgba(255, 209, 102, .24);
+    }
+
+    .screen {
+      width: min(1180px, 94vw);
+      min-height: 650px;
+      display: none;
+      position: relative;
+      z-index: 1;
+      border-radius: 34px;
+      padding: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.07));
+      border: 1px solid rgba(255, 255, 255, .18);
+      box-shadow: 0 30px 90px rgba(0,0,0,.32), inset 0 0 0 1px rgba(255,255,255,.1);
+      backdrop-filter: blur(16px);
+    }
+
+    .screen.active { display: block; animation: pop .28s ease; }
+
+    @keyframes pop {
+      from { opacity: 0; transform: translateY(12px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .start-screen {
+      text-align: center;
+      padding: 54px 44px;
+    }
+
+    .kicker {
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-weight: 900;
+      margin: 0 0 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(54px, 8vw, 104px);
+      line-height: .9;
+      letter-spacing: -.06em;
+      text-shadow: 0 16px 34px rgba(0,0,0,.24);
+    }
+
+    .subtitle {
+      margin: 18px auto 0;
+      max-width: 780px;
+      color: rgba(255,255,255,.82);
+      font-size: 24px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .versus {
+      margin: 44px auto 36px;
+      display: grid;
+      grid-template-columns: 1fr 150px 1fr;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .team-card {
+      padding: 24px;
+      border-radius: 28px;
+      color: white;
+      box-shadow: 0 20px 40px rgba(0,0,0,.22), inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    .team-card.red { background: linear-gradient(135deg, var(--red), var(--red-dark)); }
+    .team-card.blue { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); }
+    .team-card span { display: block; opacity: .82; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+    .team-card strong { display: block; margin-top: 8px; font-size: 36px; }
+
+    .vs-badge {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 35% 30%, #fff4bd, var(--gold) 58%, #d99100);
+      color: #06152f;
+      font-size: 52px;
+      font-weight: 1000;
+      box-shadow: 0 18px 40px rgba(255,209,102,.22), inset 0 -6px 0 rgba(0,0,0,.12);
+      transform: rotate(-4deg);
+    }
+
+    .rules {
+      width: min(780px, 100%);
+      margin: 0 auto 26px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .rules div {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.12);
+      font-weight: 800;
+      color: rgba(255,255,255,.9);
+    }
+
+    .start-btn, .next-btn, .reset-btn {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 18px 34px;
+      font-size: 24px;
+      font-weight: 1000;
+      color: #06152f;
+      background: linear-gradient(135deg, #fff1a8, var(--gold));
+      box-shadow: 0 18px 34px rgba(255,209,102,.26), inset 0 -3px 0 rgba(0,0,0,.14);
+      transition: .16s ease;
+    }
+
+    .start-btn:hover, .next-btn:hover, .reset-btn:hover { transform: translateY(-2px) scale(1.02); }
+
+    .battle-top {
+      display: grid;
+      grid-template-columns: 1fr auto auto 1fr;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .score-card {
+      border-radius: 24px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .score-card.red { background: linear-gradient(135deg, rgba(230,57,70,.82), rgba(159,29,42,.72)); }
+    .score-card.blue { background: linear-gradient(135deg, rgba(37,99,235,.82), rgba(21,60,159,.72)); }
+    .score-card.active { border-color: rgba(255,255,255,.86); box-shadow: 0 18px 38px rgba(0,0,0,.22); }
+    .score-card span { font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .score-card b { font-size: 42px; }
+
+    .round-pill {
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.11);
+      border: 1px solid rgba(255,255,255,.16);
+      color: var(--gold);
+      font-weight: 1000;
+      text-align: center;
+      min-width: 230px;
+    }
+
+    .timer-card {
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 35% 28%, #ffffff, #fff0a8 58%, var(--gold));
+      color: #071a3d;
+      box-shadow: 0 16px 34px rgba(255,209,102,.24), inset 0 -5px 0 rgba(0,0,0,.12);
+      font-weight: 1000;
+      text-align: center;
+    }
+
+    .timer-card b {
+      display: block;
+      font-size: 42px;
+      line-height: 1;
+    }
+
+    .timer-card span {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .timer-card.danger {
+      background: radial-gradient(circle at 35% 28%, #ffffff, #ffd7dc 58%, var(--red));
+      color: var(--red-dark);
+      animation: pulse .62s ease infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.06); }
+    }
+
+    .turn-banner {
+      margin: -6px auto 18px;
+      width: fit-content;
+      padding: 6px 22px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: #071a3d;
+      font-size: 20px;
+      font-weight: 1000;
+      box-shadow: 0 12px 26px rgba(0,0,0,.16);
+    }
+
+    .turn-banner.red { color: var(--red-dark); }
+    .turn-banner.blue { color: var(--blue-dark); }
+
+    .quiz-board {
+      position: relative;
+      padding: 24px;
+      border-radius: 36px;
+      background:
+        linear-gradient(135deg, rgba(230,57,70,.18), transparent 28%),
+        linear-gradient(225deg, rgba(37,99,235,.2), transparent 28%),
+        linear-gradient(180deg, #18346f 0%, #0b1d48 100%);
+      border: 5px solid rgba(255,255,255,.86);
+      box-shadow: 0 28px 70px rgba(0,0,0,.32), inset 0 0 0 6px rgba(255,209,102,.2), inset 0 -18px 36px rgba(0,0,0,.18);
+    }
+
+    .quiz-board::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border-radius: 28px;
+      border: 2px dashed rgba(255,209,102,.38);
+      pointer-events: none;
+    }
+
+    .quiz-board::after {
+      content: "WORD BATTLE";
+      position: absolute;
+      left: 50%;
+      top: -18px;
+      transform: translateX(-50%);
+      padding: 8px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #fff1a8, var(--gold));
+      color: #071a3d;
+      font-weight: 1000;
+      letter-spacing: .1em;
+      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+    }
+
+    .question-card {
+      position: relative;
+      min-height: 156px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border-radius: 28px;
+      background: linear-gradient(180deg, #fffdf6 0%, #fff0bd 100%);
+      color: #06152f;
+      padding: 24px;
+      border: 4px solid #ffd166;
+      box-shadow: 0 18px 36px rgba(0,0,0,.24), inset 0 -5px 0 rgba(217,145,0,.22);
+      margin-bottom: 22px;
+      z-index: 1;
+    }
+
+    .question-card span {
+      display: block;
+      color: #546174;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .question-card h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.15;
+    }
+
+    .player-options {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .player-panel {
+      border-radius: 30px;
+      padding: 18px;
+      border: 3px solid rgba(255,255,255,.82);
+      box-shadow: 0 18px 36px rgba(0,0,0,.26), inset 0 0 0 2px rgba(255,255,255,.14);
+    }
+
+    .player-panel.red {
+      background: linear-gradient(180deg, #f04d58 0%, #b91f31 100%);
+    }
+
+    .player-panel.blue {
+      background: linear-gradient(180deg, #3b82f6 0%, #1747b5 100%);
+    }
+
+    .player-panel h3 {
+      margin: 0 0 14px;
+      padding: 10px 12px;
+      border-radius: 18px;
+      color: white;
+      font-size: 24px;
+      letter-spacing: .02em;
+      text-align: center;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .option {
+      min-height: 82px;
+      border: 3px solid rgba(255,255,255,.72);
+      border-radius: 20px;
+      padding: 14px 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #eaf2ff 100%);
+      color: #071a3d;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: 0 12px 0 rgba(7,26,61,.2), 0 18px 28px rgba(0,0,0,.2);
+      transition: .16s ease;
+    }
+
+    .option:hover { transform: translateY(-2px); box-shadow: 0 20px 36px rgba(0,0,0,.2); }
+    .option .letter {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: #071a3d;
+      background: #eef4ff;
+      border: 2px solid #d8e4ff;
+      font-size: 26px;
+    }
+
+    .player-panel.red .option { border-color: rgba(255,255,255,.86); }
+    .player-panel.blue .option { border-color: rgba(255,255,255,.86); }
+    .player-panel.red .option:hover { box-shadow: 0 12px 0 rgba(100,0,15,.26), 0 18px 30px rgba(0,0,0,.24), 0 0 0 4px rgba(255,255,255,.2); }
+    .player-panel.blue .option:hover { box-shadow: 0 12px 0 rgba(0,20,90,.26), 0 18px 30px rgba(0,0,0,.24), 0 0 0 4px rgba(255,255,255,.2); }
+    .option.correct { border-color: var(--gold); background: #fff7cc; }
+    .option.wrong { border-color: var(--red); background: #ffe1e5; animation: shake .24s ease; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    .feedback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      place-items: center;
+      z-index: 5;
+      background: rgba(7,26,61,.34);
+      border-radius: 34px;
+    }
+
+    .feedback.show { display: grid; }
+
+    .feedback-card {
+      width: min(560px, 86vw);
+      text-align: center;
+      padding: 38px;
+      border-radius: 34px;
+      background: white;
+      color: #071a3d;
+      box-shadow: 0 28px 70px rgba(0,0,0,.32);
+      animation: reward .32s ease;
+    }
+
+    @keyframes reward {
+      0% { transform: scale(.82) rotate(-2deg); opacity: 0; }
+      70% { transform: scale(1.06) rotate(1deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .feedback-card .emoji { font-size: 72px; line-height: 1; }
+    .feedback-card h3 { margin: 6px 0 8px; font-size: 56px; letter-spacing: -.04em; }
+    .feedback-card p { margin: 0; font-size: 24px; color: #526178; font-weight: 800; }
+    .feedback-card.correct h3 { color: #d99100; }
+    .feedback-card.wrong h3 { color: var(--red); }
+
+    .countdown {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      display: none;
+      place-items: center;
+      border-radius: 34px;
+      background: radial-gradient(circle, rgba(255,209,102,.26), rgba(7,26,61,.76));
+      font-size: clamp(64px, 10vw, 132px);
+      font-weight: 1000;
+      color: var(--gold);
+      text-shadow: 0 12px 34px rgba(0,0,0,.36);
+      letter-spacing: -.05em;
+    }
+
+    .countdown.show { display: grid; animation: reward .42s ease; }
+
+    .round-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .result-screen { text-align: center; }
+    .winner-card {
+      margin: 44px auto 30px;
+      width: min(780px, 100%);
+      padding: 34px;
+      border-radius: 34px;
+      background: rgba(255,255,255,.94);
+      color: #071a3d;
+      box-shadow: 0 24px 60px rgba(0,0,0,.24);
+    }
+    .winner-card h2 { margin: 0; font-size: 58px; color: var(--gold); text-shadow: 0 3px 0 #7c5700; }
+    .winner-card p { font-size: 24px; font-weight: 800; color: #526178; }
+    .clues {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+    }
+    .clues span {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: #153c9f;
+      font-weight: 900;
+    }
+
+    .music-toggle {
+      position: absolute;
+      right: 26px;
+      bottom: 20px;
+      z-index: 3;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: rgba(255,255,255,.14);
+      color: white;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    .sound-note {
+      position: absolute;
+      left: 26px;
+      bottom: 20px;
+      color: rgba(255,255,255,.58);
+      font-size: 13px;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="game">
+    <section id="startScreen" class="screen start-screen active">
+      <p class="kicker">Red Team vs Blue Team</p>
+      <h1>WORD BATTLE</h1>
+      <p class="subtitle">Chinese to English Challenge<br />Read the Chinese meaning. Choose the correct English word.</p>
+      <div class="versus">
+        <div class="team-card red"><span>Player A</span><strong>Red Team</strong></div>
+        <div class="vs-badge">VS</div>
+        <div class="team-card blue"><span>Player B</span><strong>Blue Team</strong></div>
+      </div>
+      <div class="rules">
+        <div>看中文</div>
+        <div>选英文</div>
+        <div>先对10词获胜</div>
+      </div>
+      <button id="startBtn" class="start-btn">START BATTLE</button>
+    </section>
+
+    <section id="battleScreen" class="screen">
+      <div class="battle-top">
+        <button id="redTeam" class="score-card red active" type="button"><span>Red Team</span><b id="redScore">0</b></button>
+        <div id="roundInfo" class="round-pill">Round 1 / 15</div>
+        <div id="timerCard" class="timer-card"><div><b id="timerText">6</b><span>seconds</span></div></div>
+        <button id="blueTeam" class="score-card blue" type="button"><span>Blue Team</span><b id="blueScore">0</b></button>
+      </div>
+      <div id="turnBanner" class="turn-banner red">Same word · Fastest correct answer wins</div>
+      <div class="quiz-board">
+        <div class="question-card">
+          <div>
+            <span id="roundType">看中文 · 选英文</span>
+            <h2 id="questionText">文化遗产</h2>
+          </div>
+        </div>
+        <div class="player-options">
+          <div class="player-panel red">
+            <h3>Player 1 · Red Team</h3>
+            <div id="redOptions" class="options"></div>
+          </div>
+          <div class="player-panel blue">
+            <h3>Player 2 · Blue Team</h3>
+            <div id="blueOptions" class="options"></div>
+          </div>
+        </div>
+      </div>
+      <div class="round-actions">
+        <button id="nextBtn" class="next-btn" type="button">NEXT WORD</button>
+      </div>
+      <div id="feedback" class="feedback" aria-live="polite">
+        <div id="feedbackCard" class="feedback-card">
+          <div id="feedbackEmoji" class="emoji">⭐</div>
+          <h3 id="feedbackTitle">Amazing!</h3>
+          <p id="feedbackText">+1 Point</p>
+        </div>
+      </div>
+      <div id="countdown" class="countdown"></div>
+    </section>
+
+    <section id="resultScreen" class="screen result-screen">
+      <p class="kicker">看中文 · 选英文 Clues Collected</p>
+      <h1>GAME OVER</h1>
+      <div class="winner-card">
+        <h2 id="winnerText">Red Team Wins!</h2>
+        <p>Now use these vocabulary clues in your writing.</p>
+        <div class="clues">
+          <span>heritage</span>
+          <span>guardian</span>
+          <span>preserve</span>
+          <span>dedicate</span>
+          <span>devotion</span>
+          <span>perseverance</span>
+          <span>persistent</span>
+          <span>devoted</span>
+          <span>committed</span>
+          <span>selfless</span>
+          <span>noble</span>
+          <span>diligent</span>
+          <span>courageous</span>
+          <span>responsible</span>
+          <span>inspiring</span>
+        </div>
+      </div>
+      <button id="resetBtn" class="reset-btn" type="button">PLAY AGAIN</button>
+    </section>
+    <button id="musicToggle" class="music-toggle" type="button">BGM ON</button>
+    <div class="sound-note">Tip: Click START BATTLE first to enable sounds.</div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        type: 'Round 1 · 看中文 · 选英文',
+        question: '文化遗产',
+        options: ['heritage', 'guardian', 'devotion', 'noble'],
+        answer: 0,
+        correct: 'Amazing!',
+        detail: 'heritage means 文化遗产.'
+      },
+      {
+        type: 'Round 2 · 看中文 · 选英文',
+        question: '守护者',
+        options: ['preserve', 'guardian', 'selfless', 'diligent'],
+        answer: 1,
+        correct: 'Perfect!',
+        detail: 'guardian means 守护者.'
+      },
+      {
+        type: 'Round 3 · 看中文 · 选英文',
+        question: '守护；保护',
+        options: ['dedicate', 'preserve', 'persistent', 'responsible'],
+        answer: 1,
+        correct: 'Excellent!',
+        detail: 'preserve means 守护；保护.'
+      },
+      {
+        type: 'Round 4 · 看中文 · 选英文',
+        question: '奉献',
+        options: ['devotion', 'inspiring', 'dedicate', 'courageous'],
+        answer: 2,
+        correct: 'Great job!',
+        detail: 'dedicate means 奉献.'
+      },
+      {
+        type: 'Round 5 · 看中文 · 选英文',
+        question: '忠诚；热忱',
+        options: ['devotion', 'heritage', 'committed', 'selfless'],
+        answer: 0,
+        correct: 'Wonderful!',
+        detail: 'devotion means 忠诚；热忱.'
+      },
+      {
+        type: 'Round 6 · 看中文 · 选英文',
+        question: '坚毅',
+        options: ['noble', 'perseverance', 'guardian', 'devoted'],
+        answer: 1,
+        correct: 'Fantastic!',
+        detail: 'perseverance means 坚毅.'
+      },
+      {
+        type: 'Round 7 · 看中文 · 选英文',
+        question: '执着的',
+        options: ['persistent', 'preserve', 'diligent', 'inspiring'],
+        answer: 0,
+        correct: 'Brilliant!',
+        detail: 'persistent means 执着的.'
+      },
+      {
+        type: 'Round 8 · 看中文 · 选英文',
+        question: '无私奉献的',
+        options: ['responsible', 'noble', 'devoted', 'heritage'],
+        answer: 2,
+        correct: 'Excellent!',
+        detail: 'devoted means 无私奉献的.'
+      },
+      {
+        type: 'Round 9 · 看中文 · 选英文',
+        question: '坚定尽责的',
+        options: ['committed', 'guardian', 'courageous', 'devotion'],
+        answer: 0,
+        correct: 'Perfect!',
+        detail: 'committed means 坚定尽责的.'
+      },
+      {
+        type: 'Round 10 · 看中文 · 选英文',
+        question: '无私的',
+        options: ['selfless', 'dedicate', 'persistent', 'preserve'],
+        answer: 0,
+        correct: 'Amazing!',
+        detail: 'selfless means 无私的.'
+      },
+      {
+        type: 'Round 11 · 看中文 · 选英文',
+        question: '高尚的',
+        options: ['diligent', 'noble', 'responsible', 'perseverance'],
+        answer: 1,
+        correct: 'Wonderful!',
+        detail: 'noble means 高尚的.'
+      },
+      {
+        type: 'Round 12 · 看中文 · 选英文',
+        question: '勤勉的',
+        options: ['inspiring', 'devoted', 'diligent', 'heritage'],
+        answer: 2,
+        correct: 'Great job!',
+        detail: 'diligent means 勤勉的.'
+      },
+      {
+        type: 'Round 13 · 看中文 · 选英文',
+        question: '勇敢无畏的',
+        options: ['courageous', 'committed', 'guardian', 'selfless'],
+        answer: 0,
+        correct: 'Fantastic!',
+        detail: 'courageous means 勇敢无畏的.'
+      },
+      {
+        type: 'Round 14 · 看中文 · 选英文',
+        question: '有担当的',
+        options: ['responsible', 'noble', 'dedicate', 'devotion'],
+        answer: 0,
+        correct: 'Brilliant!',
+        detail: 'responsible means 有担当的.'
+      },
+      {
+        type: 'Round 15 · 看中文 · 选英文',
+        question: '鼓舞人心的',
+        options: ['preserve', 'perseverance', 'inspiring', 'persistent'],
+        answer: 2,
+        correct: 'Amazing!',
+        detail: 'inspiring means 鼓舞人心的.'
+      }
+    ];
+
+    const startScreen = document.querySelector('#startScreen');
+    const battleScreen = document.querySelector('#battleScreen');
+    const resultScreen = document.querySelector('#resultScreen');
+    const startBtn = document.querySelector('#startBtn');
+    const nextBtn = document.querySelector('#nextBtn');
+    const resetBtn = document.querySelector('#resetBtn');
+    const musicToggle = document.querySelector('#musicToggle');
+    const redTeam = document.querySelector('#redTeam');
+    const blueTeam = document.querySelector('#blueTeam');
+    const redScoreText = document.querySelector('#redScore');
+    const blueScoreText = document.querySelector('#blueScore');
+    const timerCard = document.querySelector('#timerCard');
+    const timerText = document.querySelector('#timerText');
+    const roundInfo = document.querySelector('#roundInfo');
+    const roundType = document.querySelector('#roundType');
+    const questionText = document.querySelector('#questionText');
+    const redOptions = document.querySelector('#redOptions');
+    const blueOptions = document.querySelector('#blueOptions');
+    const turnBanner = document.querySelector('#turnBanner');
+    const feedback = document.querySelector('#feedback');
+    const feedbackCard = document.querySelector('#feedbackCard');
+    const feedbackEmoji = document.querySelector('#feedbackEmoji');
+    const feedbackTitle = document.querySelector('#feedbackTitle');
+    const feedbackText = document.querySelector('#feedbackText');
+    const countdown = document.querySelector('#countdown');
+    const winnerText = document.querySelector('#winnerText');
+
+    const roundSeconds = 6;
+    const winningScore = 10;
+    let current = 0;
+    let scores = { red: 0, blue: 0 };
+    let answered = false;
+    let timeLeft = roundSeconds;
+    let timerId;
+    let audioContext;
+    let musicTimer;
+    let musicOn = true;
+
+    nextBtn.disabled = false;
+    nextBtn.style.opacity = '1';
+
+    function show(screen) {
+      [startScreen, battleScreen, resultScreen].forEach(item => item.classList.remove('active'));
+      screen.classList.add('active');
+    }
+
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 1;
+      utterance.pitch = 1.08;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function tone(frequency, duration, type = 'sine', volume = .28) {
+      audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      oscillator.type = type;
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(.001, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + .02);
+      gain.gain.exponentialRampToValueAtTime(.001, audioContext.currentTime + duration);
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + duration);
+    }
+
+    function playMusicBeat() {
+      if (!musicOn) return;
+      tone(130.81, .08, 'sine', .018);
+      setTimeout(() => tone(196, .06, 'sine', .014), 420);
+      setTimeout(() => tone(261.63, .05, 'triangle', .012), 820);
+      setTimeout(() => tone(196, .06, 'sine', .014), 1260);
+    }
+
+    function startMusic() {
+      if (!musicOn || musicTimer) return;
+      playMusicBeat();
+      musicTimer = setInterval(playMusicBeat, 1700);
+    }
+
+    function stopMusic() {
+      clearInterval(musicTimer);
+      musicTimer = undefined;
+    }
+
+    function toggleMusic() {
+      musicOn = !musicOn;
+      musicToggle.textContent = musicOn ? 'BGM ON' : 'BGM OFF';
+      if (musicOn) startMusic();
+      else stopMusic();
+    }
+
+    function startSound() {
+      tone(540, .12);
+      setTimeout(() => tone(720, .18), 130);
+      speak('Ready? Go!');
+    }
+
+    function correctSound(text) {
+      tone(620, .1);
+      setTimeout(() => tone(860, .16), 65);
+      setTimeout(() => tone(640, .2), 230);
+      speak(text);
+    }
+
+    function wrongSound() {
+      tone(180, .22, 'square');
+      speak('Try again!');
+    }
+
+    function timeUpSound() {
+      tone(220, .18, 'square');
+      setTimeout(() => tone(160, .24, 'square'), 150);
+      speak("Time's up!");
+    }
+
+    function setNextEnabled(enabled) {
+      nextBtn.disabled = !enabled;
+      nextBtn.style.opacity = enabled ? '1' : '.55';
+      nextBtn.style.cursor = enabled ? 'pointer' : 'not-allowed';
+    }
+
+    function setReadyState() {
+      redTeam.classList.add('active');
+      blueTeam.classList.add('active');
+      turnBanner.className = 'turn-banner';
+      turnBanner.textContent = 'Same word · Fastest correct answer wins';
+    }
+
+    function showCountdown(text) {
+      countdown.textContent = text;
+      countdown.classList.add('show');
+      setTimeout(() => countdown.classList.remove('show'), 760);
+    }
+
+    function stopTimer() {
+      clearInterval(timerId);
+    }
+
+    function updateTimer() {
+      timerText.textContent = timeLeft;
+      timerCard.classList.toggle('danger', timeLeft <= 3);
+    }
+
+    function disableOptions() {
+      [redOptions, blueOptions].forEach(group => {
+        group.querySelectorAll('.option').forEach(button => {
+          button.disabled = true;
+          button.style.cursor = 'not-allowed';
+          button.style.opacity = '.72';
+        });
+      });
+    }
+
+    function handleTimeUp() {
+      if (answered) return;
+      answered = true;
+      stopTimer();
+      disableOptions();
+      showFeedback(false, "Time's up!", 'No point this round.', 'Next word coming.');
+      timeUpSound();
+      setTimeout(goNextRound, 900);
+    }
+
+    function startTimer() {
+      stopTimer();
+      timeLeft = roundSeconds;
+      updateTimer();
+      timerId = setInterval(() => {
+        timeLeft -= 1;
+        updateTimer();
+        if (timeLeft <= 0) handleTimeUp();
+      }, 1000);
+    }
+
+    function renderQuestion() {
+      const item = questions[current];
+      answered = false;
+      setReadyState();
+      setNextEnabled(true);
+      roundInfo.textContent = `Word ${current + 1} / ${questions.length} · First to ${winningScore}`;
+      roundType.textContent = item.type;
+      questionText.textContent = item.question;
+      nextBtn.textContent = 'NEXT WORD';
+      redOptions.innerHTML = '';
+      blueOptions.innerHTML = '';
+      renderOptions(redOptions, 'red');
+      renderOptions(blueOptions, 'blue');
+      startTimer();
+    }
+
+    function renderOptions(container, player) {
+      const item = questions[current];
+      ['A', 'B', 'C', 'D'].forEach((letter, index) => {
+        const button = document.createElement('button');
+        button.className = 'option';
+        button.type = 'button';
+        button.innerHTML = `<span class="letter">${letter}</span><span>${item.options[index]}</span>`;
+        button.addEventListener('click', () => chooseAnswer(button, index, player));
+        container.appendChild(button);
+      });
+    }
+
+    function goNextRound() {
+      if (scores.red >= winningScore || scores.blue >= winningScore) {
+        showResult();
+        return;
+      }
+      current = (current + 1) % questions.length;
+      renderQuestion();
+    }
+
+    function chooseAnswer(button, index, player) {
+      if (answered) return;
+      const item = questions[current];
+      const isCorrect = index === item.answer;
+      if (isCorrect) {
+        answered = true;
+        stopTimer();
+        scores[player] += 1;
+        redScoreText.textContent = scores.red;
+        blueScoreText.textContent = scores.blue;
+        button.classList.add('correct');
+        disableOptions();
+        turnBanner.className = `turn-banner ${player}`;
+        turnBanner.textContent = player === 'red' ? 'Red Team got it first!' : 'Blue Team got it first!';
+        showFeedback(true, item.correct, `${player === 'red' ? 'Red Team' : 'Blue Team'} +1 Point!`, item.detail);
+        correctSound(item.correct);
+        setTimeout(goNextRound, 1100);
+      } else {
+        button.classList.add('wrong');
+        showFeedback(false, 'Try again!', `${player === 'red' ? 'Red Team' : 'Blue Team'} can try again.`, '');
+        wrongSound();
+        setTimeout(() => button.classList.remove('wrong'), 520);
+      }
+    }
+
+    function showFeedback(correct, title, text, detail) {
+      feedbackCard.className = `feedback-card ${correct ? 'correct' : 'wrong'}`;
+      feedbackEmoji.textContent = correct ? '⭐' : '💡';
+      feedbackTitle.textContent = title;
+      feedbackText.textContent = detail ? `${text} ${detail}` : text;
+      feedback.classList.add('show');
+      setTimeout(() => feedback.classList.remove('show'), correct ? 1450 : 650);
+    }
+
+    function showResult() {
+      stopTimer();
+      stopMusic();
+      if (scores.red >= winningScore) winnerText.textContent = 'Red Team Wins!';
+      else if (scores.blue >= winningScore) winnerText.textContent = 'Blue Team Wins!';
+      else if (scores.red > scores.blue) winnerText.textContent = 'Red Team Leads!';
+      else if (scores.blue > scores.red) winnerText.textContent = 'Blue Team Leads!';
+      else winnerText.textContent = 'It is a Tie!';
+      show(resultScreen);
+      speak('Game over!');
+    }
+
+    startBtn.addEventListener('click', () => {
+      startSound();
+      startMusic();
+      show(battleScreen);
+      showCountdown('Ready? Go!');
+      setTimeout(() => {
+        renderQuestion();
+      }, 760);
+    });
+
+    musicToggle.addEventListener('click', toggleMusic);
+
+    nextBtn.addEventListener('click', () => {
+      if (answered) return;
+      answered = true;
+      stopTimer();
+      disableOptions();
+      goNextRound();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      stopTimer();
+      current = 0;
+      scores = { red: 0, blue: 0 };
+      redScoreText.textContent = '0';
+      blueScoreText.textContent = '0';
+      setReadyState();
+      show(startScreen);
+    });
+  </script>
+</body>
+</html>
