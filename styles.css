@@ -796,6 +796,13 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 .student-task-card strong { font-size: 22px; color: var(--primary-dark); }
 .student-task-card span { color: var(--muted); font-weight: 800; }
 .student-clue-grid { grid-template-columns: repeat(4, minmax(190px, 1fr)); }
+
+.student-clue-grid .clue-card i {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  font-size: 24px;
+}
 .muted-text { color: var(--muted); line-height: 1.7; }
 .qr-panel { text-align: center; }
 .qr-mock {
