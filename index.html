@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SEEK Writing Agent Studio</title>
-  <link rel="stylesheet" href="styles.css?v=student-entry" />
+  <title>SEEK 教师端 · 线索式写作教学平台</title>
+  <link rel="stylesheet" href="styles.css?v=20261122b" />
+  <!-- 方案 D 定稿主题：品牌蓝 + 216px 侧栏 + 紧凑表单 + sticky footer。
+       单独一个文件，方便回退：删掉这一行就回到旧视觉。 -->
+  <link rel="stylesheet" href="theme-d.css?v=20261122b" />
 </head>
-<body>
-  <div class="demo-toolbar" aria-label="Classroom demo controls">
+<body data-view="teacher">
+  <div class="demo-toolbar" aria-label="课堂演示操作">
     <div>
-      <strong>SEEK Classroom Demo</strong>
+      <strong>教师端</strong>
       <span id="stepIndicator">Step 1 / 7 · 首页</span>
     </div>
     <div class="toolbar-actions">
+      <a class="ghost-btn role-switch" href="student.html" target="_blank"
+         rel="noopener">学生入口 ↗</a>
       <button id="prevStep" class="ghost-btn">上一页</button>
       <button id="nextStep" class="ghost-btn">下一页</button>
       <button id="printCard" class="print-btn">打印修改卡</button>
@@ -24,207 +29,276 @@
       <div class="brand">
         <div>
           <h1>SEEK</h1>
-          <p>Writing Agent Studio</p>
+          <p>线索式写作教学平台</p>
         </div>
       </div>
-      <nav class="nav-list" aria-label="Prototype sections">
+      <nav class="nav-list" aria-label="页面导航">
+        <div class="nav-group-label">教师操作</div>
         <button class="nav-item active" data-target="home"><span class="nav-icon">⌂</span>01 首页</button>
         <button class="nav-item" data-target="teacher"><span class="nav-icon">✓</span>02 教师任务</button>
+        <div class="nav-group-label">课堂流程（学生视角）</div>
         <button class="nav-item" data-target="draft"><span class="nav-icon">✎</span>03 学生初稿</button>
         <button class="nav-item" data-target="clues"><span class="nav-icon">?</span>04 AI 线索卡</button>
         <button class="nav-item" data-target="seek-card"><span class="nav-icon">★</span>05 SEEK 修改卡</button>
         <button class="nav-item" data-target="review"><span class="nav-icon">↔</span>06 修改对比</button>
+        <!-- 讲评视图是独立页面（/seek/review），不是单页内切换，所以用 <a> -->
+        <a class="nav-item nav-external" href="review.html"><span class="nav-icon">▤</span>课堂讲评</a>
+        <div class="nav-group-label">展示</div>
         <button class="nav-item" data-target="share"><span class="nav-icon">↗</span>07 展示链接</button>
       </nav>
-      <div class="detective-figure" aria-hidden="true">
-        <img src="assets/detective-character.png" alt="" />
-      </div>
+      <!-- 侦探插画已隐藏（去装饰）。同时移除 <img>：
+           否则即使 CSS 隐藏，浏览器仍会下载这张 2.6 MB 的图，手机上白等。 -->
+      <div class="detective-figure" aria-hidden="true" hidden></div>
       <div class="tool-stickers" aria-hidden="true">
         <span>⌕</span><span>✎</span><span>?</span><span>★</span>
       </div>
       <div class="sidebar-note">
-        <span>Teaching Principle</span>
-        <strong>AI gives clues.<br />Students make revisions.</strong>
+        <span>教学原则</span>
+        <strong>AI 只给线索<br />学生完成修改</strong>
       </div>
     </aside>
 
     <main class="main-content">
       <section id="home" class="page active-page hero-page has-character pose-home" data-title="首页">
-        <div class="page-character" aria-hidden="true"></div>
         <div class="hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">College English Writing · Agent-supported Classroom</p>
-            <h2>SEEK 英语写作智能体课堂平台</h2>
-            <p class="hero-text">面向大学英语人物事迹类写作课的混合原型：Web 静态原型展示课堂流程，纸质 SEEK 修改卡承载学生真实互动，AI 线索卡帮助学生完成有理由、有证据的修改。</p>
-            <div class="mission-tags" aria-label="Classroom mission tags">
-              <span><i>01</i> Find clues</span>
-              <span><i>02</i> Explain why</span>
-              <span><i>03</i> Revise better</span>
+            <p class="eyebrow">大学英语写作 · 智能体支持课堂</p>
+            <h2>SEEK 线索式大学英语写作教学平台</h2>
+            <p class="hero-text">SEEK 是面向大学英语写作课堂的智能体，具备四项能力：搜线索（发现问题）、析原因（说明影响）、优表达（完成修改）、留证据（展示提升）。它按教师设定的任务与量表读学生的初稿，指出可改之处并说明理由；全程只给线索、不代写，评价标准始终由教师把握。</p>
+            <div class="mission-tags" aria-label="课堂任务标签">
+              <span><i>01</i> 找线索</span>
+              <span><i>02</i> 析原因</span>
+              <span><i>03</i> 优表达</span>
             </div>
             <div class="hero-actions">
               <button class="primary-btn" data-target="teacher">开始课堂演示</button>
               <button class="secondary-btn" data-target="share">获取展示链接</button>
             </div>
             <div class="value-row">
-              <div><b>Teacher-led</b><span>教师设定任务和评价标准</span></div>
-              <div><b>Student-owned</b><span>学生完成初稿和修改</span></div>
-              <div><b>AI-supported</b><span>AI 只提供线索</span></div>
+              <div><b>教师主导</b><span>教师设定任务和评价标准</span></div>
+              <div><b>学生主体</b><span>学生完成初稿和修改</span></div>
+              <div><b>AI 辅助</b><span>AI 只提供线索</span></div>
             </div>
           </div>
           <div class="model-card">
-            <h3>SEEK Revision Model</h3>
+            <h3>SEEK 修改模型</h3>
             <div class="seek-steps">
-              <div><i>⌕</i><b>S</b><span>Search clues</span><em>搜线索：发现问题</em></div>
-              <div><i>?</i><b>E</b><span>Explain causes</span><em>析原因：说明影响</em></div>
-              <div><i>✎</i><b>E</b><span>Enhance writing</span><em>优表达：完成修改</em></div>
-              <div><i>★</i><b>K</b><span>Keep evidence</span><em>留证据：展示提升</em></div>
+              <div><i>⌕</i><b>S</b><span>Search（搜线索）</span><em>发现问题</em></div>
+              <div><i>?</i><b>E</b><span>Explain（析原因）</span><em>说明影响</em></div>
+              <div><i>✎</i><b>E</b><span>Enhance（优表达）</span><em>完成修改</em></div>
+              <div><i>★</i><b>K</b><span>Keep（留证据）</span><em>展示提升</em></div>
             </div>
           </div>
         </div>
       </section>
 
       <section id="teacher" class="page has-character pose-teacher" data-title="教师任务">
-        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
-            <p class="eyebrow">Teacher Dashboard</p>
-            <h2>创建人物事迹类写作任务</h2>
+            <p class="eyebrow">教师工作台</p>
+            <h2>创建本次写作任务</h2>
           </div>
           <span class="badge">教师主导 · 任务可控</span>
         </div>
         <div class="lesson-flow">
-          <div class="flow-item active"><b>✓</b><span>Set Task</span></div>
-          <div class="flow-item"><b>✎</b><span>Write Draft</span></div>
-          <div class="flow-item"><b>?</b><span>Get Clues</span></div>
-          <div class="flow-item"><b>↻</b><span>Revise</span></div>
-          <div class="flow-item"><b>★</b><span>Review</span></div>
+          <div class="flow-item active"><b>✓</b><span>设任务</span></div>
+          <div class="flow-item"><b>✎</b><span>写初稿</span></div>
+          <div class="flow-item"><b>?</b><span>取线索</span></div>
+          <div class="flow-item"><b>↻</b><span>修改</span></div>
+          <div class="flow-item"><b>★</b><span>复核</span></div>
         </div>
         <div class="panel-grid two-cols">
           <article class="panel">
-            <h3>Writing Task</h3>
-            <label>Writing Topic</label>
-            <input value="Write about a person who inspires you." />
-            <label>Target Students</label>
-            <input value="First-year non-English majors" />
-            <label>Word Requirement</label>
-            <input value="80–120 words / one complete paragraph" />
-            <label>AI Feedback Mode</label>
-            <input value="Clue-based feedback; no direct rewriting" />
+            <h3>写作任务</h3>
+            <div class="frow">
+              <label for="taskFramework">文体</label>
+              <select id="taskFramework">
+                <option value="wave" selected>人物传记 · WAVE</option>
+                <option value="pace">因果关系说明文 · PACE</option>
+                <option value="pact">议论文 · PACT</option>
+              </select>
+            </div>
+            <div class="frow">
+              <label for="taskTopic">写作话题</label>
+              <!-- 话题由脚本按文体填充（老师提供的 15 题，每文体 5 题）；以下为人物传记的初始项与原有示例 -->
+              <select id="taskTopic">
+                <option>01 The Life of a Teacher I Admire（一位我敬佩的教师的人生）</option>
+                <option>02 My Grandmother's Life Story（我的祖母的人生故事）</option>
+                <option>03 A Doctor's Life of Service（一位医生奉献的人生）</option>
+              </select>
+            </div>
+            <div class="frow">
+              <label for="taskStudents">授课对象</label>
+              <select id="taskStudents">
+                <option>一年级非英语专业</option>
+                <option>二年级非英语专业</option>
+              </select>
+            </div>
+            <div class="frow">
+              <label for="taskGenre">写作类型</label>
+              <select id="taskGenre">
+                <option>段落写作</option>
+                <option>篇章写作</option>
+              </select>
+            </div>
+            <div class="frow">
+              <label for="taskWords">字数要求</label>
+              <select id="taskWords">
+                <option>50–80 词</option>
+                <option selected>80–120 词</option>
+                <option>120–180 词</option>
+              </select>
+            </div>
+            <div class="frow">
+              <label for="taskMode">反馈模式</label>
+              <select id="taskMode">
+                <option>线索式反馈，不直接代写</option>
+              </select>
+            </div>
           </article>
           <article class="panel rubric-panel">
-            <h3>Rubric Dimensions</h3>
-            <div class="rubric-list wave-rubric">
-              <div><strong>W</strong><span>Who</span><b>25</b></div>
-              <div><strong>A</strong><span>Actions</span><b>25</b></div>
-              <div><strong>V</strong><span>Values</span><b>25</b></div>
-              <div><strong>E</strong><span>Echo</span><b>25</b></div>
+            <h3>Rubric 评分维度</h3>
+            <p class="rubric-framework" id="rubricFramework">WAVE · 人物传记</p>
+            <p class="rubric-note" id="rubricNote" hidden></p>
+            <div class="rubric-list wave-rubric" id="rubricList">
+              <div><strong>W</strong><span>Who 人称与视角</span><b>25</b></div>
+              <div><strong>A</strong><span>Actions 动作表达</span><b>25</b></div>
+              <div><strong>V</strong><span>Values 价值立意</span><b>25</b></div>
+              <div><strong>E</strong><span>Echo 个人与社会影响</span><b>25</b></div>
             </div>
-            <div class="rubric-total"><span>Total Score</span><b>100</b></div>
-            <button class="primary-btn wide" data-target="draft">发布任务并进入学生端</button>
+            <div class="rubric-total"><span>总分</span><b id="rubricTotal">100</b></div>
           </article>
+        </div>
+      
+        <!-- 主按钮从 rubric 面板里移出来：原来塞在面板底部，面板边界会把按钮切掉。
+             现在放在页面级 sticky footer，永远完整可见。 -->
+        <div class="sticky-footer">
+          <div class="stat" id="taskSummary">
+            <span>文体 <b id="sumFramework">WAVE</b></span>
+            <span>字数 <b id="sumWords">80–120 词</b></span>
+            <span>对象 <b id="sumStudents">一年级非英语专业</b></span>
+            <span>维度 <b id="sumDims">4</b> · 总分 <b id="sumTotal">100</b></span>
+          </div>
+          <div class="acts">
+            <button class="secondary-btn" id="printCardFooter">打印修改卡</button>
+            <button class="primary-btn" data-target="draft">发布任务并进入学生端</button>
+          </div>
         </div>
       </section>
 
       <section id="draft" class="page has-character pose-draft" data-title="学生初稿">
-        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
-            <p class="eyebrow">Student Workspace</p>
+            <p class="eyebrow">学生工作台</p>
             <h2>学生初稿输入</h2>
           </div>
           <span class="badge">学生主体 · 先写后评</span>
         </div>
         <div class="panel-grid two-cols wide-left">
           <article class="panel">
-            <h3>Writing Requirements</h3>
-            <ul class="check-list">
+            <h3>写作要求</h3>
+            <ul class="check-list" id="writingRequirements">
               <li>Introduce who the person is.</li>
               <li>Describe one specific event.</li>
               <li>Show one clear quality.</li>
               <li>Explain what you learned.</li>
             </ul>
             <div class="mini-note">课堂提示：先完成自己的初稿，再请求 AI 给线索。</div>
-            <div class="teacher-tip"><b>Teacher Cue</b><span>Ask students: What is still general in this draft?</span></div>
           </article>
           <article class="panel writing-panel">
-            <h3>My First Draft</h3>
+            <h3>我的初稿</h3>
             <textarea id="draftText">The person who inspires me most is my high school English teacher, Ms. Lin. She was always patient and responsible. She often encouraged us when we felt nervous before exams. I still remember that she stayed in the classroom after school to help some students with their English. She also told us that learning English was not only for tests, but also for seeing a bigger world. Because of her, I became more confident in English learning. I think she is a good teacher and I respect her very much.</textarea>
-            <button class="primary-btn" data-target="clues">Get AI Clues</button>
+            <button class="primary-btn" id="fetchCluesBtn" data-target="clues">获取 AI 线索</button>
           </article>
         </div>
       </section>
 
       <section id="clues" class="page has-character pose-clues" data-title="AI 线索卡">
-        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
-            <p class="eyebrow">AI Clue Cards</p>
+            <p class="eyebrow">AI 线索卡</p>
             <h2>AI 只给线索，不直接代写</h2>
           </div>
-          <span class="badge warning">No full rewriting</span>
+          <span class="badge warning">不代写全文</span>
         </div>
         <div class="ai-policy">
-          <span>Agent Rule</span>
-          <strong>Do not rewrite the paragraph directly. Give clue-based feedback only.</strong>
+          <span>智能体规则</span>
+          <strong>不要直接重写段落，只给基于线索的反馈。</strong>
         </div>
-        <div class="clue-grid">
-          <article class="clue-card selected"><i>W</i><span>人物 Who</span><h3>人物背景还可以更有意义</h3><p>The person is clear, but her background can be more meaningful.</p><strong>Question: What made her different from other teachers?</strong></article>
-          <article class="clue-card selected"><i>A</i><span>事件 Actions</span><h3>事件仍然比较笼统</h3><p>The event is mentioned, but it is still general.</p><strong>Question: What exactly happened after school?</strong></article>
-          <article class="clue-card"><i>V</i><span>品质 Values</span><h3>品质需要通过行动体现</h3><p>You used patient and responsible, but the event should show these qualities more strongly.</p><strong>Question: Which action shows them?</strong></article>
-          <article class="clue-card"><i>E</i><span>启发 Echo</span><h3>结尾启发可以更深入</h3><p>The ending tells your feeling, but the lesson can be deeper.</p><strong>Question: How did she change your attitude?</strong></article>
+        <!-- 线索卡由 script.js 调 POST /seek/clues 实时渲染。
+             这里原来是 4 张写死的示例卡（“AI 是空壳”的根源），现在留空容器。 -->
+        <div class="score-summary" id="scoreSummary" hidden></div>
+        <div class="clue-status" id="clueStatus" role="status" aria-live="polite"></div>
+        <div class="clue-grid" id="clueGrid">
+          <p class="clue-placeholder">点「获取 AI 线索」，AI 会读第 4 步里的那份初稿，针对它给出线索。</p>
+        </div>
+        <div class="clue-actions">
+          <button class="ghost-btn" id="refetchCluesBtn" type="button">重新生成线索</button>
         </div>
         <div class="bottom-action"><button class="primary-btn" data-target="seek-card">填写 SEEK 修改证据卡</button></div>
       </section>
 
       <section id="seek-card" class="page has-character pose-seek" data-title="SEEK 修改卡">
-        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
-            <p class="eyebrow">SEEK Revision Evidence</p>
+            <p class="eyebrow">SEEK 修改证据</p>
             <h2>两分钟修改证据卡</h2>
           </div>
           <span class="badge">网页填写 · 纸质手卡同步</span>
         </div>
         <div id="printableCard" class="seek-form-card printable-card">
-          <div class="card-title"><h3>SEEK 两分钟修改证据卡</h3><p>Topic: Write about a person who inspires you.</p></div>
-          <div class="seek-row"><div class="seek-label">S<br /><span>Search</span></div><div><label>我发现的问题是：</label><input value="The event is not specific enough." /></div></div>
-          <div class="seek-row"><div class="seek-label">E<br /><span>Explain</span></div><div><label>这个问题会让文章：</label><div class="chips"><button class="chip active">不具体</button><button class="chip">不清楚</button><button class="chip">不感人</button><button class="chip">不连贯</button></div></div></div>
-          <div class="seek-row"><div class="seek-label">E<br /><span>Enhance</span></div><div><label>我准备：</label><div class="chips"><button class="chip active">加具体事件</button><button class="chip">换词语</button><button class="chip active">补品质</button><button class="chip">写启发</button></div></div></div>
-          <div class="seek-row"><div class="seek-label">K<br /><span>Keep</span></div><div><label>修改后，文章变得：</label><div class="chips"><button class="chip active">更具体</button><button class="chip active">更清楚</button><button class="chip">更自然</button><button class="chip">更有感染力</button></div></div></div>
-          <div class="speaking-frame">I added <input class="inline-blank" aria-label="What did you add" /> because <input class="inline-blank" aria-label="Why did you add it" />.</div>
+          <div class="card-title"><h3>SEEK 两分钟修改证据卡</h3><p id="cardTopicText">话题：写一位激励过你的人</p></div>
+          <div class="seek-row">
+            <div class="seek-label">S<br /><span>Search</span></div>
+            <div>
+              <label>我发现的问题是（从第 4 步 AI 给的线索里选一条）：</label>
+              <div class="clue-picker" id="cluePicker">
+                <p class="clue-picker-hint">还没有线索。先回到第 4 步点「获取 AI 线索」，再回来选一条。</p>
+              </div>
+              <p class="clue-selected-text" id="clueSelectedText" hidden></p>
+            </div>
+          </div>
+          <div id="clueFollowup" hidden>
+            <div class="seek-row"><div class="seek-label">E<br /><span>Explain</span></div><div><label>这个问题会让文章：</label><div class="chips" id="chipsExplain"><button class="chip" type="button">不具体</button><button class="chip" type="button">不清楚</button><button class="chip" type="button">不感人</button><button class="chip" type="button">不连贯</button></div></div></div>
+            <div class="seek-row"><div class="seek-label">E<br /><span>Enhance</span></div><div><label>我准备：</label><div class="chips" id="chipsEnhance"><button class="chip" type="button">加具体事件</button><button class="chip" type="button">换词语</button><button class="chip" type="button">补品质</button><button class="chip" type="button">写启发</button></div></div></div>
+            <div class="seek-row"><div class="seek-label">K<br /><span>Keep</span></div><div><label>修改后，文章变得：</label><div class="chips" id="chipsKeep"><button class="chip" type="button">更具体</button><button class="chip" type="button">更清楚</button><button class="chip" type="button">更自然</button><button class="chip" type="button">更有感染力</button></div></div></div>
+          </div>
+          <div class="revised-block">
+            <label for="revisedDraft">我的修改稿：</label>
+            <textarea id="revisedDraft" placeholder="把改好的整段写在这里，与第 3 步的「我的初稿」对应。"></textarea>
+          </div>
         </div>
         <div class="bottom-action"><button class="secondary-btn" id="printCardInline">打印这张手卡</button><button class="primary-btn" data-target="review">查看修改前后对比</button></div>
       </section>
 
       <section id="review" class="page has-character pose-review" data-title="修改对比">
-        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
-            <p class="eyebrow">Before & After Review</p>
+            <p class="eyebrow">修改前后对比</p>
             <h2>修改前后对比与课堂展示</h2>
           </div>
-          <span class="badge success">Evidence-based revision</span>
+          <span class="badge success">有据可循的修改</span>
         </div>
         <div class="compare-grid">
-          <article class="panel draft-card"><h3>Before Revision</h3><p>The person who inspires me most is my high school English teacher, Ms. Lin. She was always patient and responsible. She often encouraged us when we felt nervous before exams. I still remember that she stayed in the classroom after school to help some students with their English. She also told us that learning English was not only for tests, but also for seeing a bigger world. Because of her, I became more confident in English learning. I think she is a good teacher and I respect her very much.</p></article>
-          <article class="panel revised-card"><h3>After Revision</h3><p>The person who has influenced me most is my high school English teacher, Ms. Lin. At that time, I was afraid of speaking English in public because I often worried about making mistakes. One evening before the final exam, she noticed that several of us were still confused about the speaking task. Instead of simply giving us answers, she stayed in the classroom for nearly an hour, listened to each student patiently, and helped us improve our expressions sentence by sentence. From her, I learned that a responsible teacher does not just teach a subject; she helps students discover confidence in themselves.</p></article>
+          <article class="panel draft-card"><h3>修改前 <span class="rev-score" id="scoreBefore" hidden></span></h3><p id="beforeRevision"></p></article>
+          <article class="panel revised-card"><h3>修改后 <span class="rev-score" id="scoreAfter" hidden></span></h3><p id="afterRevision"></p></article>
         </div>
-        <div class="evidence-strip"><div><span>Revision Action</span><b>Added a specific event</b></div><div><span>Reason</span><b>It shows responsibility more clearly</b></div><div><span>Effect</span><b>More specific and convincing</b></div></div>
-        <div class="speaking-card"><strong>Student Speaking Frame</strong><p>I added a specific event because it can show Ms. Lin’s responsibility more clearly.</p></div>
+        <div class="evidence-strip"><div><span>修改动作</span><b id="stripAction">（先在修改卡里选择）</b></div><div><span>理由</span><b id="stripReason">（先在修改卡里选择）</b></div><div><span>效果</span><b id="stripEffect">（先在修改卡里选择）</b></div></div>
+        <div class="bottom-action"><button class="secondary-btn" data-target="draft">返回修改初稿</button><button class="primary-btn" id="finishBtn" type="button">直接提交，结束</button><span class="bottom-hint">改完可以回到第 3 步重修润色，也可以直接提交结束</span></div>
+        <p class="finish-notice" id="finishNotice" hidden></p>
       </section>
 
       <section id="share" class="page has-character pose-share" data-title="展示链接">
-        <div class="page-character" aria-hidden="true"></div>
         <div class="page-header">
           <div>
-            <p class="eyebrow">Contest Sharing Page</p>
+            <p class="eyebrow">展示与分享</p>
             <h2>公网展示链接与课堂备用方案</h2>
           </div>
-          <span class="badge success">Ready to Share</span>
+          <span class="badge success">可分享</span>
         </div>
         <div class="panel-grid two-cols">
           <article class="panel">
-            <h3>Web 原型体验地址</h3>
+            <h3>网页版体验地址</h3>
             <div class="entry-card">
               <h4>教师 / 评委演示入口</h4>
               <p>用于完整展示课堂流程、教师任务、学生端、AI 线索、SEEK 修改卡和展示备用方案。</p>
@@ -240,7 +314,7 @@
           </article>
           <article class="panel qr-panel">
             <h3>学生二维码占位区</h3>
-            <div class="qr-mock" aria-label="Student QR code placeholder"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="qr-mock" aria-label="学生二维码占位"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
             <p class="muted-text">正式提交前可将学生入口链接生成二维码，放入课件或打印材料，学生扫码后不会看到完整教师演示界面。</p>
           </article>
         </div>
@@ -250,9 +324,104 @@
           <div><b>Plan B</b><span>本地 index.html 离线打开</span></div>
           <div><b>Plan C</b><span>截图或演示视频备用</span></div>
         </div>
+        <!-- 课堂记录：学生每评一次自动存一条（作文 + 分数）。
+             按使用者要求，不存任何身份信息，所以这里也不需要"学生名单"之类的东西。 -->
+        <div class="backup-plan">
+          <h3>本次课堂记录</h3>
+          <div><b>概览</b><span id="recordsSummary">点右侧「刷新记录概览」查看已收作文数</span></div>
+          <div><b>导出</b><span>导出为 CSV，Excel 直接打开</span></div>
+          <div><b>说明</b><span>只存作文与分数，不存任何使用者信息</span></div>
+          <div class="bottom-action">
+            <button class="secondary-btn" type="button" id="recordsRefresh">刷新记录概览</button>
+            <a class="primary-btn" id="recordsExport" href="#" download>导出课堂记录（CSV）</a>
+          </div>
+        </div>
       </section>
     </main>
   </div>
-  <script src="script.js"></script>
+  <script src="script.js?v=20261114b"></script>
+
+<!-- ════════════════════════════════════════════════════════════
+     静态预览版补丁（GitHub Pages 专用）
+     这个站点只托管静态文件，没有后端，所以：
+       · 顶部加一条说明，让老师知道这是预览版
+       · 拦截「获取 AI 线索」按钮，给出明确提示而不是让它报错
+     界面、量表、讲评统计都是真实内容，只有 AI 调用和数据库需要后端。
+     ════════════════════════════════════════════════════════════ -->
+<style>
+  #seekPreviewBar {
+    position: relative;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #FFFBEB;
+    border-bottom: 1px solid #FDE68A;
+    color: #92400E;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  #seekPreviewBar b { font-weight: 700; }
+  #seekPreviewBar a { color: #B45309; }
+  #seekToast {
+    position: fixed;
+    left: 50%;
+    bottom: 96px;
+    transform: translateX(-50%);
+    z-index: 999;
+    max-width: min(520px, 90vw);
+    padding: 12px 18px;
+    border-radius: 8px;
+    background: rgba(31, 41, 55, .95);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.6;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+  }
+  #seekToast.show { opacity: 1; }
+</style>
+<div id="seekPreviewBar">
+  <span>📄</span>
+  <span><b>界面预览版</b>（静态托管）：界面、量表、讲评统计都是真实内容；
+        <b>「获取 AI 线索」需要后端服务</b>，请在正式部署环境使用。</span>
+</div>
+<div id="seekToast"></div>
+<script>
+(function () {
+  'use strict';
+  var bar = document.getElementById('seekPreviewBar');
+  // 把提示条插到 body 最前面
+  if (bar && document.body.firstChild !== bar) {
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  var toastEl = document.getElementById('seekToast');
+  var timer = null;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(timer);
+    timer = setTimeout(function () { toastEl.classList.remove('show'); }, 4200);
+  }
+
+  // 捕获阶段拦截「获取 AI 线索」，阻止它发出去再报错
+  document.addEventListener('click', function (ev) {
+    var target = ev.target;
+    if (!target || !target.closest) return;
+    var btn = target.closest('#fetchCluesBtn');
+    if (!btn) return;
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+    toast('界面预览版：AI 线索功能需要后端服务，请在正式部署环境使用。'
+          + '界面、量表、讲评统计都是真实内容，可以先看效果。');
+  }, true);
+})();
+</script>
+
 </body>
 </html>

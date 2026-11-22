@@ -35,7 +35,7 @@ button, input, textarea { font: inherit; }
 
 .app-shell {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 280px minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -138,7 +138,7 @@ button, input, textarea { font: inherit; }
 
 .tool-stickers {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -222,31 +222,7 @@ button, input, textarea { font: inherit; }
 .active-page { display: block; }
 .has-character { padding-bottom: 0; }
 
-.page-character {
-  position: absolute;
-  top: 6px;
-  right: 18px;
-  width: 76px;
-  height: 76px;
-  z-index: 2;
-  pointer-events: none;
-  opacity: .96;
-  border-radius: 22px;
-  background-color: rgba(255, 248, 223, .9);
-  background-image: url("assets/character-poses.png");
-  background-repeat: no-repeat;
-  background-size: 390px 260px;
-  border: 1px solid rgba(215, 168, 70, .7);
-  box-shadow: 0 12px 24px rgba(90,42,20,.12), inset 0 0 0 1px rgba(255,255,255,.7);
-  transform: rotate(2deg);
-}
-
-.page > :not(.page-character) { position: relative; z-index: 1; }
-.pose-home .page-character, .pose-clues .page-character, .pose-seek .page-character { display: block; }
-.pose-teacher .page-character, .pose-draft .page-character, .pose-review .page-character, .pose-share .page-character { display: none; }
-.pose-home .page-character { background-position: -8px -10px; }
-.pose-clues .page-character { background-position: -254px -15px; }
-.pose-seek .page-character { background-position: -13px -112px; }
+.page > * { position: relative; z-index: 1; }
 
 .page::after {
   position: absolute;
@@ -404,7 +380,7 @@ button, input, textarea { font: inherit; }
 .seek-steps { display: grid; gap: 14px; }
 .seek-steps div {
   display: grid;
-  grid-template-columns: 40px 50px 1fr;
+  grid-template-columns: 40px 50px minmax(0, 1fr);
   align-items: center;
   padding: 16px;
   border-radius: 20px;
@@ -439,7 +415,7 @@ button, input, textarea { font: inherit; }
 .panel { padding: 24px; position: relative; }
 .panel h3 { margin: 0 0 18px; font-size: 22px; }
 label { display: block; color: var(--muted); font-weight: 700; margin: 14px 0 7px; }
-input, textarea {
+input, select, textarea {
   width: 100%;
   border: 1px solid var(--line);
   background: #fff;
@@ -448,8 +424,18 @@ input, textarea {
   outline: none;
   color: var(--ink);
 }
-textarea { min-height: 270px; resize: vertical; line-height: 1.7; }
-input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(31,111,159,.12); }
+/* 下拉框与输入框保持同一外观；补上原生箭头空间与可点光标。 */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M1.4 0 6 4.6 10.6 0 12 1.4 6 7.4 0 1.4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+textarea { min-height: 560px; resize: vertical; line-height: 1.7; }
+input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(31,111,159,.12); }
 .draft-header {
   display: flex;
   justify-content: space-between;
@@ -477,7 +463,7 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 .rubric-list { display: grid; gap: 10px; }
 .rubric-list div {
   display: grid;
-  grid-template-columns: 1fr 44px;
+  grid-template-columns: minmax(0, 1fr) 44px;
   gap: 4px;
   align-items: center;
   padding: 13px 14px;
@@ -489,7 +475,7 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 .rubric-list b { color: var(--primary); font-size: 22px; text-align: right; }
 .rubric-list small { color: var(--muted); }
 .wave-rubric div {
-  grid-template-columns: 46px 1fr 44px;
+  grid-template-columns: 46px minmax(0, 1fr) 44px;
   gap: 12px;
 }
 .wave-rubric strong {
@@ -520,6 +506,11 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 .rubric-total b { font-size: 26px; color: var(--primary); }
 
 .check-list { margin: 0; padding-left: 20px; line-height: 2; color: var(--muted); }
+/* 三条「Writing Requirements」：加粗、字色加深、字号略增。
+   原来用的是 --muted 灰，课堂投屏看不太清。老师要求两版一致，
+   所以这里不再限定 #draft —— 学生端同步生效。 */
+.check-list { color: var(--ink); }
+.check-list li { font-weight: 700; font-size: 1.05em; color: var(--ink); margin-bottom: 2px; }
 .mini-note { margin-top: 24px; padding: 14px; border-radius: 16px; background: #fff2cc; color: #744800; font-weight: 700; }
 
 .clue-grid {
@@ -577,7 +568,7 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 .seek-form-card { padding: 26px; display: grid; gap: 16px; position: relative; }
 .seek-row {
   display: grid;
-  grid-template-columns: 86px 1fr;
+  grid-template-columns: 86px minmax(0, 1fr);
   gap: 18px;
   align-items: center;
   padding: 16px;
@@ -615,12 +606,110 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
   box-shadow: inset 0 -2px 0 rgba(194, 59, 30, .12), 0 8px 14px rgba(90,42,20,.08);
 }
 
-.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+/* ── 证据卡的线索选择器（S 行）──────────────────────────────────────
+   S 行原来是一个预填了假问题的手输框，跟第 4 步 AI 给的线索毫无关系；
+   现在改成从线索里点选，选中的那条高亮，并展开它自己的三个选择题。 */
+.clue-picker { display: flex; flex-direction: column; gap: 8px; }
+.clue-picker-hint { margin: 0; color: var(--muted); font-size: 14px; }
+.clue-option {
+  text-align: left;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 14px;
+  padding: 11px 14px;
+  cursor: pointer;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.5;
+}
+.clue-option:hover { border-color: var(--primary); }
+.clue-option.selected {
+  background: linear-gradient(135deg, #fff2cc, #ffd36d);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  font-weight: 700;
+  box-shadow: inset 0 -2px 0 rgba(194, 59, 30, .12);
+}
+.clue-selected-text {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--primary);
+  background: #fff;
+  border-radius: 0 12px 12px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* ── 整段修改稿（替代原来 `I added ___ because ___` 的两个单行填空）── */
+.revised-block {
+  display: grid;
+  gap: 7px;
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+/* 修改稿输入框与第 3 步 My First Draft 同尺寸：一进来就该有足够的书写空间 */
+.revised-block textarea { min-height: 560px; }
+
+/* 第 6 步：返回第 3 步改初稿 / 直接提交 */
+.bottom-action { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.bottom-hint { color: var(--muted); font-size: 14px; }
+.finish-notice {
+  margin: 16px 0 0;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #e8f7ea;
+  border: 1px solid #9fd3a6;
+  color: #1f5c28;
+  font-weight: 700;
+}
+button:disabled { opacity: .6; cursor: default; }
+
+/* ── 第 2 步：文体 → 量表维度 ─────────────────────────────────── */
+.rubric-framework {
+  margin: -8px 0 14px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  letter-spacing: .02em;
+}
+.rubric-note {
+  margin: 0 0 14px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: #fff8e6;
+  border: 1px dashed #ffdf91;
+  color: #744800;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.compare-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+
+/* 第 6 步：修改前后的分数，跟在两个标题后面 */
+.rev-score {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+  vertical-align: middle;
+  letter-spacing: .01em;
+}
+.rev-score.pending {
+  background: #d7dee9;
+  color: #4a5670;
+  font-weight: 700;
+}
 .draft-card p, .revised-card p { line-height: 1.8; color: var(--muted); }
 .revised-card { border-color: rgba(47,148,97,.35); }
 .evidence-strip {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   margin-top: 18px;
 }
@@ -669,7 +758,7 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 
 .value-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin-top: 30px;
 }
@@ -685,7 +774,7 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 
 .lesson-flow {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 22px;
 }
@@ -810,7 +899,7 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
   height: 190px;
   margin: 8px auto 16px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   padding: 16px;
   border-radius: 24px;
@@ -824,7 +913,7 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 
 .backup-plan {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   margin-top: 22px;
 }
@@ -853,18 +942,449 @@ input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4p
 }
 
 @media (max-width: 1100px) {
-  .app-shell { grid-template-columns: 1fr; }
+  /* 用 minmax(0, 1fr) 而不是裸 1fr：裸 1fr 的最小尺寸是 auto，
+     会被子内容的 min-content 撑开，窄屏上就是整页横向溢出。 */
+  .app-shell { grid-template-columns: minmax(0, 1fr); }
   .sidebar { position: static; height: auto; }
-  .hero-grid, .two-cols, .wide-left, .compare-grid, .lesson-flow, .value-row, .backup-plan { grid-template-columns: 1fr; }
-  .clue-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-grid, .two-cols, .wide-left, .compare-grid, .lesson-flow, .value-row, .backup-plan { grid-template-columns: minmax(0, 1fr); }
+  .clue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 700px) {
   .main-content { padding: 16px; }
   .hero-copy { padding: 26px; }
   .has-character { padding-bottom: 0; }
-  .page-character { display: none; }
-  .clue-grid, .evidence-strip { grid-template-columns: 1fr; }
+  .clue-grid, .evidence-strip { grid-template-columns: minmax(0, 1fr); }
   .page-header, .demo-toolbar, .card-title, .ai-policy, .teacher-tip { align-items: flex-start; gap: 12px; flex-direction: column; }
   .toolbar-actions { width: 100%; justify-content: flex-start; }
+
+  /* ── 手机端：学生先要能写字，不能先滑过一大段侧边栏 ──────────────────
+     ≤1100px 时侧边栏会整块堆到内容上方（含品牌、5 项导航、侦探图、贴纸、
+     说明）。这里把装饰全去掉，导航压成一条可横向滑动的窄带。 */
+  .sidebar {
+    padding: 12px 14px;
+    border-radius: 18px;
+    margin-bottom: 12px;
+  }
+  .sidebar .detective-figure,
+  .sidebar .tool-stickers,
+  .sidebar .sidebar-note { display: none; }
+  .sidebar .brand { margin-bottom: 10px; }
+  .sidebar .brand h1 { font-size: 22px; }
+  .sidebar .brand p { font-size: 12px; }
+  .sidebar .nav-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .sidebar .nav-item {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* 手机屏幕矮，输入框不用占满一屏（电脑端仍是 560px） */
+  textarea, .revised-block textarea { min-height: 300px; }
+
+  /* 分数胶囊在窄屏别把标题挤换行 */
+  .rev-score { margin-left: 8px; padding: 2px 9px; font-size: 13px; }
+
+  /* ── 窄屏横向溢出加固 ────────────────────────────────────────────────
+     手机上出现的“页面太宽、缩不回去”，根因是某个子元素比屏幕宽，浏览器
+     就把整页按那个宽度渲染。逐个抓容易漏，这里做一次系统性加固：
+       ① 掐掉溢出源（线索卡那个故意超出 26px 的装饰圆）
+       ② 给 grid / flex 子项补 min-width:0（默认 auto 会被内容撑开）
+       ③ 长英文/长串允许断行
+       ④ 最后兜一层，防止还有漏网的把整页撑宽 */
+  .clue-card::after { display: none; }
+
+  .main-content > *,
+  .app-shell > *,
+  .panel-grid > *,
+  .two-cols > *,
+  .wide-left > *,
+  .clue-grid > *,
+  .compare-grid > *,
+  .evidence-strip > *,
+  .rubric-list > *,
+  .seek-form-card > *,
+  .panel > * { min-width: 0; }
+
+  /* 证据卡的行：窄屏把 86px 的字母方块改成“上面一行、下面内容”，
+     否则左列固定宽度 + 右列内容的最小宽度会把整行顶宽。 */
+  .seek-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .seek-label { width: 56px; height: 56px; border-radius: 18px; }
+
+  /* 长英文单词、长链接、连续英文句子一律允许断行 */
+  p, li, b, span, strong, label, button, h1, h2, h3, .clue-option,
+  .clue-selected-text, .evidence-strip b, .score-summary,
+  .student-task-card strong, .revised-block label {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  img, svg { max-width: 100%; height: auto; }
+
+  /* 兜底：万一还有漏网的宽元素，也只在内部裁剪，不把整个页面撑宽 */
+  html, body { max-width: 100%; overflow-x: hidden; }
+}
+
+/* ── AI 线索卡：实时生成的加载/状态/占位 ───────────────────────────────
+   原来的 4 张卡片改成了由 POST /seek/clues 渲染。这里只补充状态提示与
+   占位样式，卡片本身仍用上面已有的 .clue-card 规则。 */
+
+.clue-status {
+  margin: 4px 0 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.clue-status:empty { display: none; }
+.clue-status.is-loading {
+  background: #eef4ff;
+  color: #1f4b99;
+  border: 1px dashed #a8c2ec;
+}
+.clue-status.is-ok {
+  background: #eefaf1;
+  color: #1d6b3a;
+  border: 1px solid #b6e0c4;
+}
+.clue-status.is-warn {
+  background: #fff8e6;
+  color: #8a5b00;
+  border: 1px solid #f0d18a;
+}
+.clue-status.is-error {
+  background: #fdeeee;
+  color: #9b1c1c;
+  border: 1px solid #efb4b4;
+  font-weight: 600;
+}
+
+.clue-placeholder {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 22px;
+  border: 1px dashed #c9cfda;
+  border-radius: 14px;
+  color: #5b6472;
+  background: #fafbfd;
+  text-align: center;
+}
+
+.clue-note {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.clue-actions {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0 0;
+}
+.clue-actions button[disabled] { opacity: 0.55; cursor: not-allowed; }
+
+/* ── 评分说明 ───────────────────────────────────────────────────────
+   按老师定的口径讲分数：内容表达到了哪一档 + 语言扣了几分 + 本维最终几分。
+   学生端不出现 B / D 字母；教师端多一行原始明细（.score-raw）。 */
+
+.score-summary {
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border: 1px solid #d9e2f0;
+  border-radius: 14px;
+  background: #f7faff;
+}
+.score-summary[hidden] { display: none; }
+
+.score-summary-head {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1f3b73;
+  margin-bottom: 8px;
+}
+
+.score-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+.score-list li {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #33405a;
+}
+.score-list li b {
+  color: #1f3b73;
+  margin-right: 6px;
+}
+.score-list li span { color: #33405a; }
+
+.score-raw {
+  display: block;
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-style: normal;
+  color: #6b7280;
+}
+
+.score-summary-tail {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #c8d6ea;
+  font-size: 12.5px;
+  color: #6b7280;
+}
+
+/* ============================================================================
+   SEEK-UI-2026-11-21  界面改造
+   ----------------------------------------------------------------------------
+   Part A  学生端移动端瘦身（学生用手机扫码，壳必须压到最小）
+   Part B  教师端去装饰（老师用电脑，问题是"太花哨"，不是"壳太厚"）
+
+   为什么这样改：
+     手机实测（872px 宽）里，学生端一屏 1890px 中约 830px 是工具栏、品牌区、
+     导航条和标题区——滑完一整屏还看不到任务内容。把壳压成
+     「顶部 48px 进度条 + 底部 56px 标签栏」后，内容基本能占满一屏。
+
+     教师端的问题不是空间不够，是装饰太多：侦探插画、图标贴纸、卡片胶带、
+     每页一个彩球、背景色块。这些不传递任何信息，只占视觉预算。
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   Part B  教师端去装饰（全尺寸生效，桌面优先）
+   ---------------------------------------------------------------------------
+   判断标准：这个元素是否传递信息？不传递的一律去掉。
+   保留：SEEK 品牌字、侧栏的"教学原则"（那是有意义的表述）。
+   --------------------------------------------------------------------------- */
+
+/* 侧栏底部：侦探插画（218px 高）+ 4 个图标贴纸 —— 纯装饰 */
+.detective-figure,
+.tool-stickers {
+  display: none;
+}
+
+/* 每个页面右上角的彩球（.page::after 是通用，.pose-* 是各页配色） */
+.page::after,
+.pose-teacher::after,
+.pose-draft::after,
+.pose-review::after,
+.pose-share::after,
+.pose-home::after,
+.pose-clues::after,
+.pose-seek::after {
+  display: none;
+}
+
+/* 卡片顶部的"胶带"（伪元素做的小色块） */
+.hero-copy::before,
+.model-card::before,
+.panel::before,
+.seek-form-card::before {
+  display: none;
+}
+
+/* 背景层装饰：渐变光斑、网格、角落色块 */
+.main-content::before,
+.main-content::after,
+.topbar::before,
+.page-header::before,
+/* 背景从"奶油渐变 + 网格纸"换成干净的浅色底 */
+body {
+  background: #f7f5ef;
+}
+
+/* 去掉装饰后，卡片本身要撑起层次——只留边框和轻阴影，不加花纹 */
+.panel,
+.model-card,
+.hero-copy,
+.seek-form-card {
+  background: #fffdf8;
+  box-shadow: 0 1px 2px rgba(80, 62, 30, .06), 0 6px 18px rgba(80, 62, 30, .05);
+}
+
+/* 侧栏上去掉插画和贴纸后，说明卡会贴在导航下面，给点间距 */
+.sidebar-note {
+  margin-top: 18px;
+}
+
+/* ---------------------------------------------------------------------------
+   Part A  学生端移动端瘦身
+   ---------------------------------------------------------------------------
+   只在 ≤700px（手机）生效。教师端的移动布局不动。
+   目标：把「工具栏 + 品牌 + 导航 + 标题区」从约 830px 压到约 110px。
+   --------------------------------------------------------------------------- */
+@media (max-width: 700px) {
+
+  /* ① 顶部工具栏：从两行压成一行，去掉手机上无法使用的"打印修改卡" */
+  .demo-toolbar.student-toolbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 12px;
+    min-height: 44px;
+  }
+  /* "SEEK Student Entry" 这段品牌字在手机上没必要，进度数字已说明身份 */
+  .student-toolbar > div:first-child strong {
+    display: none;
+  }
+  .student-toolbar #stepIndicator {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .student-toolbar .toolbar-actions {
+    width: auto;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  .student-toolbar .toolbar-actions button {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  /* 手机不能打印，这个按钮纯占位 */
+  .student-toolbar #printCard {
+    display: none;
+  }
+
+  /* ② 品牌区隐藏；5 项导航改成底部固定标签栏 */
+  .student-sidebar {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+  .student-sidebar .brand {
+    display: none;
+  }
+  .student-sidebar .nav-list {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: #fffdf7;
+    border-top: 1px solid #e8dcc0;
+    box-shadow: 0 -2px 12px rgba(80, 62, 30, .08);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .student-sidebar .nav-item {
+    flex: 1 0 auto;
+    padding: 8px 10px;
+    font-size: 12px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  /* 底部固定栏会盖住内容，给整页留出空间 */
+  .student-shell {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* ③ 页面标题区：去掉英文眉标，标题缩小，徽标不再单独占一行 */
+  .student-shell .page-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+    padding: 0;
+  }
+  .student-shell .page-header .eyebrow {
+    display: none;
+  }
+  .student-shell .page-header h2 {
+    font-size: 20px;
+    margin: 0;
+    line-height: 1.25;
+  }
+  .student-shell .page-header .badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  /* ④ 字号与内边距整体收紧：一屏能多装 2~3 行 */
+  .student-shell p,
+  .student-shell li {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .student-shell h3 {
+    font-size: 17px;
+    margin: 0 0 8px;
+  }
+  .student-shell h2 {
+    font-size: 20px;
+  }
+  .student-shell .panel,
+  .student-shell article {
+    padding: 14px;
+    border-radius: 14px;
+  }
+  .student-shell textarea,
+  .student-shell .revised-block textarea {
+    min-height: 220px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .student-shell .panel-grid {
+    gap: 12px;
+  }
+  .student-shell .bottom-action {
+    gap: 8px;
+    padding: 10px 0 4px;
+  }
+
+  /* 学生端证据卡：S/E/E/K 四个标签方块在手机上收紧 */
+  .student-shell .seek-label {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    font-size: 15px;
+  }
+
+  /* ④ 的延伸：学生端主按钮要够大够显眼（课堂上是手机点） */
+  .student-shell .primary-btn {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 16px;
+  }
+}
+
+/* 侧栏导航分组标签（教师操作 / 课堂流程 / 展示）。
+   原来 7 个按钮一条线排下来，老师分不清哪些是"我要做的"、哪些是"学生要做的"。 */
+.nav-group-label {
+  margin: 10px 0 4px;
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: #9a8a6a;
+  text-transform: none;
+}
+.nav-group-label:first-child {
+  margin-top: 0;
+}
+
+/* 教师端顶部的「学生入口」链接，样式对齐旁边的 ghost-btn */
+.role-switch {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>课堂讲评 · SEEK 教师端</title>
+  <link rel="stylesheet" href="styles.css?v=20261122b" />
+  <link rel="stylesheet" href="theme-d.css?v=20261122b" />
+  <style>
+    /* 讲评页专属布局（视觉沿用 theme-d.css 的色板与卡片规范） */
+
+    .rv-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .rv-kpi {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .rv-kpi .lab { font-size: 11.5px; color: #9CA3AF; }
+    .rv-kpi .val {
+      margin-top: 2px;
+      font-size: 22px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #1F2937;
+    }
+    .rv-kpi .val small {
+      font-size: 12px;
+      font-weight: 500;
+      color: #9CA3AF;
+      margin-left: 2px;
+    }
+
+    /* 错误排行条 */
+    .rv-erow {
+      display: grid;
+      grid-template-columns: 104px minmax(0, 1fr) 62px;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .rv-erow:last-child { border-bottom: 0; }
+    .rv-ename { font-size: 12.5px; color: #1F2937; }
+    .rv-ebar {
+      height: 6px;
+      border-radius: 3px;
+      background: #F3F4F6;
+      overflow: hidden;
+    }
+    .rv-ebar i {
+      display: block;
+      height: 100%;
+      border-radius: 3px;
+      background: #B45309;
+      opacity: .75;
+    }
+    .rv-ecnt {
+      text-align: right;
+      font-size: 13px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #4B5563;
+    }
+    .rv-ecnt small { font-weight: 500; font-size: 10.5px; color: #9CA3AF; }
+
+    /* 四维行 */
+    .rv-drow {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr) 64px 40px;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .rv-drow:last-child { border-bottom: 0; }
+    .rv-dk { font-weight: 800; font-size: 12px; color: var(--primary); }
+    .rv-dnm { font-size: 12.5px; color: #1F2937; }
+    .rv-dnm em {
+      font-style: normal;
+      color: #9CA3AF;
+      font-size: 11px;
+      margin-left: 5px;
+    }
+    .rv-dbar {
+      height: 6px;
+      border-radius: 3px;
+      background: #F3F4F6;
+      overflow: hidden;
+    }
+    .rv-dbar i {
+      display: block;
+      height: 100%;
+      border-radius: 3px;
+      background: var(--primary);
+      opacity: .7;
+    }
+    .rv-dval {
+      text-align: right;
+      font-size: 13px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #4B5563;
+    }
+    .rv-drow.weak .rv-dk { color: #B45309; }
+    .rv-drow.weak .rv-dbar i { background: #B45309; }
+    .rv-drow.weak .rv-dval { color: #B45309; }
+
+    .rv-insight {
+      margin-top: 12px;
+      padding: 9px 12px;
+      border-radius: 6px;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #92400E;
+    }
+
+    /* 例句列表 */
+    .rv-sents { margin: 0; padding: 0; list-style: none; }
+    .rv-sents li {
+      padding: 9px 0;
+      border-bottom: 1px solid #F3F4F6;
+      font-size: 12.5px;
+      line-height: 1.65;
+    }
+    .rv-sents li:last-child { border-bottom: 0; }
+    .rv-tag {
+      display: inline-block;
+      margin-right: 6px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: #FFFBEB;
+      color: #B45309;
+      font-size: 10.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .rv-tag.ok { background: #ECFDF5; color: #059669; }
+
+    /* 分数分布 */
+    .rv-brow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      font-size: 12.5px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .rv-brow:last-child { border-bottom: 0; }
+    .rv-brow span { flex: 1; color: #4B5563; }
+    .rv-brow b { font-variant-numeric: tabular-nums; color: #1F2937; }
+    .rv-brow small { color: #9CA3AF; font-size: 10.5px; }
+
+    /* 加载 / 空 / 错 */
+    .rv-state {
+      padding: 40px 20px;
+      text-align: center;
+      color: #9CA3AF;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .rv-state.error { color: #B45309; }
+    .rv-loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 6px;
+      border: 2px solid #E5E7EB;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      vertical-align: -2px;
+      animation: rv-spin .8s linear infinite;
+    }
+    @keyframes rv-spin { to { transform: rotate(360deg); } }
+
+    .rv-note {
+      margin-top: 4px;
+      font-size: 11.5px;
+      color: #9CA3AF;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .rv-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div>
+        <h1>SEEK</h1>
+        <p>线索式写作教学平台</p>
+      </div>
+    </div>
+    <nav class="nav-list" aria-label="页面导航">
+      <div class="nav-group-label">教师操作</div>
+      <a class="nav-item" href="index.html"><span class="nav-icon">⌂</span>首页</a>
+      <a class="nav-item" href="index.html"><span class="nav-icon">✓</span>教师任务</a>
+      <a class="nav-item active" href="review.html"><span class="nav-icon">▤</span>课堂讲评</a>
+      <div class="nav-group-label">课堂流程（学生视角）</div>
+      <a class="nav-item" href="index.html"><span class="nav-icon">✎</span>学生初稿</a>
+      <a class="nav-item" href="index.html"><span class="nav-icon">?</span>AI 线索卡</a>
+      <a class="nav-item" href="index.html"><span class="nav-icon">★</span>SEEK 修改卡</a>
+      <a class="nav-item" href="index.html"><span class="nav-icon">↔</span>修改对比</a>
+      <div class="nav-group-label">展示</div>
+      <a class="nav-item" href="index.html"><span class="nav-icon">↗</span>展示链接</a>
+    </nav>
+    <div class="sidebar-note">
+      <span>统计口径</span>
+      <strong>同一篇作文多次提交<br />只计一次</strong>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="demo-toolbar">
+      <div>
+        <strong>课堂讲评</strong>
+        <span id="rvStamp">读取中…</span>
+      </div>
+      <div class="toolbar-actions">
+        <a class="ghost-btn role-switch" href="index.html">返回教师端</a>
+        <button class="ghost-btn" id="rvRefresh">刷新数据</button>
+        <button class="print-btn" id="rvExport">导出讲评素材</button>
+      </div>
+    </div>
+
+    <section class="page">
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">教师工作台</p>
+          <h2 id="rvTitle">课堂讲评</h2>
+        </div>
+        <span class="badge" id="rvSample">—</span>
+      </div>
+
+      <div id="rvBody">
+        <div class="rv-state"><span class="rv-loading"></span>正在聚合课堂数据…</div>
+      </div>
+    </section>
+
+    <div class="sticky-footer">
+      <div class="stat" id="rvFooterStat">
+        <span>样本 <b id="fsSample">—</b></span>
+        <span>量表 <b id="fsFramework">—</b></span>
+        <span>语言错误 <b id="fsErrors">—</b></span>
+      </div>
+      <div class="acts">
+        <button class="secondary-btn" id="rvExport2">导出讲评素材</button>
+        <a class="primary-btn" href="index.html" style="text-decoration:none">返回教师端</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ── 课堂讲评页 ────────────────────────────────────────────────
+   数据全部来自 GET /seek/review/summary（真实数据库聚合）。
+   统计口径由后端保证：按作文去重、跳过 <10 词的极短作文。
+   ──────────────────────────────────────────────────────────── */
+
+const API = 'review-summary.json';   // 静态预览版：读预先烤好的数据快照
+// 静态版没有导出接口，导出文本在前端拼
+
+const $ = (id) => document.getElementById(id);
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function state(text, kind) {
+  return '<div class="rv-state' + (kind === 'error' ? ' error' : '') + '">' + text + '</div>';
+}
+
+function render(d) {
+  if (!d || d.ok === false) {
+    $('rvBody').innerHTML = state('读取失败：' + esc((d && d.error) || '未知错误'), 'error');
+    return;
+  }
+  if (d.empty) {
+    $('rvBody').innerHTML = state(
+      '还没有可讲评的数据。<br />先让学生在「学生初稿」页提交作文并获取线索，这里就会自动聚合。');
+    $('rvSample').textContent = '暂无样本';
+    return;
+  }
+
+  LAST_SUMMARY = d;
+  const s = d.sample || {};
+  const sc = d.score || {};
+  const dims = d.dimensions || [];
+  const errs = d.errorTypes || [];
+  const bad = d.badSentences || [];
+  const good = d.goodSentences || [];
+  const bands = sc.bands || {};
+
+  $('rvTitle').textContent = '课堂讲评 · ' + (d.framework || '') + ' ' + (d.rubricId || '');
+  $('rvSample').textContent = (s.uniqueEssays || 0) + ' 篇（去重后）';
+  $('fsSample').textContent = (s.uniqueEssays || 0) + ' 篇';
+  $('fsFramework').textContent = d.framework || '—';
+  $('fsErrors').textContent = (d.languageErrorTotal || 0) + ' 人次';
+
+  const maxErr = errs.length ? Math.max(...errs.map(e => e.count)) : 1;
+  const maxDim = dims.length ? Math.max(...dims.map(x => x.avg)) : 1;
+
+  const errRows = errs.length
+    ? errs.map(e => `
+        <div class="rv-erow">
+          <span class="rv-ename">${esc(e.name)}</span>
+          <span class="rv-ebar"><i style="width:${Math.round(e.count / maxErr * 100)}%"></i></span>
+          <span class="rv-ecnt">${e.count} <small>人次</small></span>
+        </div>`).join('')
+    : '<div class="rv-note">本批作文未检出语言错误线索。</div>';
+
+  const dimRows = dims.length
+    ? dims.map(x => `
+        <div class="rv-drow${x.key === d.weakestDimension ? ' weak' : ''}">
+          <span class="rv-dk">${esc(x.key)}</span>
+          <span class="rv-dnm">${esc(x.nameZh)}<em>${esc(x.name)}</em></span>
+          <span class="rv-dbar"><i style="width:${Math.round((x.avg / (x.max || 25)) * 100)}%"></i></span>
+          <span class="rv-dval">${x.avg}</span>
+        </div>`).join('')
+    : '<div class="rv-note">暂无四维分数。</div>';
+
+  const weak = dims.find(x => x.key === d.weakestDimension);
+  const insight = weak
+    ? '<div class="rv-insight">本班最弱维度：<b>' + esc(weak.nameZh) + '（' + esc(weak.name) + '）</b>，平均 '
+      + weak.avg + ' 分。讲评时可优先展开这一维。</div>'
+    : '';
+
+  const badRows = bad.length
+    ? bad.map(b => '<li><span class="rv-tag">' + esc(b.type) + '</span>' + esc(b.snippet) + '</li>').join('')
+    : '<li class="rv-note">本批没有可用的病句原句。</li>';
+
+  const goodRows = good.length
+    ? good.map(g => '<li><span class="rv-tag ok">' + Math.round(g.score) + ' 分</span>' + esc(g.snippet) + '</li>').join('')
+    : '<li class="rv-note">本批暂无 70 分以上作文，未抽取好句。</li>';
+
+  const bandNames = {
+    excellent: '优秀 80+', good: '良好 60–79',
+    pass: '及格 40–59', low: '待提高 <40',
+  };
+  const bandRows = Object.keys(bandNames).map(k => `
+    <div class="rv-brow">
+      <span>${bandNames[k]}</span>
+      <b>${bands[k] || 0}</b><small>篇</small>
+    </div>`).join('');
+
+  $('rvBody').innerHTML = `
+    <div class="rv-kpis">
+      <div class="rv-kpi"><div class="lab">平均分</div>
+        <div class="val">${sc.avg == null ? '—' : sc.avg}</div></div>
+      <div class="rv-kpi"><div class="lab">最高 / 最低</div>
+        <div class="val">${sc.max == null ? '—' : Math.round(sc.max)}
+          <small>/ ${sc.min == null ? '—' : sc.min}</small></div></div>
+      <div class="rv-kpi"><div class="lab">语言错误合计</div>
+        <div class="val">${d.languageErrorTotal || 0} <small>人次</small></div></div>
+      <div class="rv-kpi"><div class="lab">内容线索合计</div>
+        <div class="val">${Object.values(d.contentCluesByDim || {}).reduce((a, b) => a + b, 0)} <small>条</small></div></div>
+    </div>
+
+    <div class="panel-grid two-cols">
+      <article class="panel">
+        <h3>全班共性错误 Top 5</h3>
+        <div style="padding:6px 16px 16px">${errRows}</div>
+      </article>
+      <article class="panel">
+        <h3>四维平均分布</h3>
+        <div style="padding:6px 16px 16px">${dimRows}${insight}</div>
+      </article>
+    </div>
+
+    <div class="panel-grid two-cols" style="margin-top:14px">
+      <article class="panel">
+        <h3>典型病句</h3>
+        <div style="padding:2px 16px 12px">
+          <ul class="rv-sents">${badRows}</ul>
+          <p class="rv-note">取自学生原文，未含任何身份信息。</p>
+        </div>
+      </article>
+      <article class="panel">
+        <h3>典型好句</h3>
+        <div style="padding:2px 16px 12px">
+          <ul class="rv-sents">${goodRows}</ul>
+          <p class="rv-note">系统按句长与完整度从高分段作文抽取，供老师参考选用。</p>
+        </div>
+      </article>
+    </div>
+
+    <article class="panel" style="margin-top:14px">
+      <h3>分数分布</h3>
+      <div style="padding:6px 16px 14px">${bandRows}</div>
+    </article>
+  `;
+
+  $('rvStamp').textContent = '样本 ' + (s.uniqueEssays || 0) + ' 篇 · 原始记录 '
+    + (s.records || 0) + ' 条';
+}
+
+async function load() {
+  $('rvBody').innerHTML = '<div class="rv-state"><span class="rv-loading"></span>正在聚合课堂数据…</div>';
+  try {
+    const r = await fetch(API, { headers: { Accept: 'application/json' } });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    render(await r.json());
+  } catch (e) {
+    $('rvBody').innerHTML = state('读取失败：' + esc(e.message)
+      + '<br />请确认 SEEK 服务在运行。', 'error');
+    $('rvStamp').textContent = '读取失败';
+  }
+}
+
+let LAST_SUMMARY = null;
+
+/** 静态版：直接用页面上的数据在前端拼出导出文本（没有后端接口）。 */
+function buildExportText(d) {
+  if (!d || !d.ok || d.empty) return 'SEEK 课堂讲评素材\n\n（暂无可用数据）\n';
+  const L = [];
+  const names = { excellent: '优秀 80+', good: '良好 60–79', pass: '及格 40–59', low: '待提高 <40' };
+  L.push('SEEK 课堂讲评素材');
+  L.push('='.repeat(46));
+  L.push('量表：' + (d.framework || '') + ' / ' + (d.rubricId || ''));
+  L.push('样本：' + d.sample.uniqueEssays + ' 篇（去重后；原始记录 ' + d.sample.records + ' 条）');
+  L.push('');
+  L.push('一、全班共性错误 Top 5');
+  L.push('-'.repeat(46));
+  (d.errorTypes || []).forEach(e => L.push('  ' + e.name + '：' + e.count + ' 人次'));
+  L.push('');
+  L.push('二、四维平均分布（满分 25/维）');
+  L.push('-'.repeat(46));
+  (d.dimensions || []).forEach(x => {
+    L.push('  ' + x.key + ' ' + x.nameZh + '（' + x.name + '）：' + x.avg
+      + (x.key === d.weakestDimension ? '  ← 本班最弱' : ''));
+  });
+  L.push('');
+  L.push('三、典型病句（可直接用于讲评）');
+  L.push('-'.repeat(46));
+  (d.badSentences || []).forEach(b => L.push('  [' + b.type + '] ' + b.snippet));
+  L.push('');
+  L.push('四、典型好句（表扬用）');
+  L.push('-'.repeat(46));
+  if ((d.goodSentences || []).length) {
+    d.goodSentences.forEach(g => L.push('  [' + Math.round(g.score) + ' 分] ' + g.snippet));
+  } else {
+    L.push('  （本批暂无 70 分以上作文，未抽取好句）');
+  }
+  L.push('');
+  L.push('五、分数分布');
+  L.push('-'.repeat(46));
+  Object.keys(names).forEach(k => L.push('  ' + names[k] + '：' + ((d.score.bands || {})[k] || 0) + ' 篇'));
+  L.push('  平均分：' + d.score.avg);
+  L.push('');
+  L.push('-'.repeat(46));
+  L.push('说明：');
+  L.push('  · 统计按作文去重，同一篇多次提交只计一次。');
+  L.push('  · 典型好句为系统按句长与完整度启发式抽取，供参考，非权威判定。');
+  L.push('  · 本文件不含任何学生身份信息。');
+  return L.join('\n');
+}
+
+function exportTxt() {
+  const txt = buildExportText(LAST_SUMMARY);
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'SEEK课堂讲评素材.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+$('rvRefresh').addEventListener('click', load);
+$('rvExport').addEventListener('click', exportTxt);
+$('rvExport2').addEventListener('click', exportTxt);
+load();
+</script>
+<!-- ════════════════════════════════════════════════════════════
+     静态预览版补丁（GitHub Pages 专用）
+     这个站点只托管静态文件，没有后端，所以：
+       · 顶部加一条说明，让老师知道这是预览版
+       · 拦截「获取 AI 线索」按钮，给出明确提示而不是让它报错
+     界面、量表、讲评统计都是真实内容，只有 AI 调用和数据库需要后端。
+     ════════════════════════════════════════════════════════════ -->
+<style>
+  #seekPreviewBar {
+    position: relative;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #FFFBEB;
+    border-bottom: 1px solid #FDE68A;
+    color: #92400E;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  #seekPreviewBar b { font-weight: 700; }
+  #seekPreviewBar a { color: #B45309; }
+  #seekToast {
+    position: fixed;
+    left: 50%;
+    bottom: 96px;
+    transform: translateX(-50%);
+    z-index: 999;
+    max-width: min(520px, 90vw);
+    padding: 12px 18px;
+    border-radius: 8px;
+    background: rgba(31, 41, 55, .95);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.6;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+  }
+  #seekToast.show { opacity: 1; }
+</style>
+<div id="seekPreviewBar">
+  <span>📄</span>
+  <span><b>界面预览版</b>（静态托管）：界面、量表、讲评统计都是真实内容；
+        <b>「获取 AI 线索」需要后端服务</b>，请在正式部署环境使用。</span>
+</div>
+<div id="seekToast"></div>
+<script>
+(function () {
+  'use strict';
+  var bar = document.getElementById('seekPreviewBar');
+  // 把提示条插到 body 最前面
+  if (bar && document.body.firstChild !== bar) {
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  var toastEl = document.getElementById('seekToast');
+  var timer = null;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(timer);
+    timer = setTimeout(function () { toastEl.classList.remove('show'); }, 4200);
+  }
+
+  // 捕获阶段拦截「获取 AI 线索」，阻止它发出去再报错
+  document.addEventListener('click', function (ev) {
+    var target = ev.target;
+    if (!target || !target.closest) return;
+    var btn = target.closest('#fetchCluesBtn');
+    if (!btn) return;
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+    toast('界面预览版：AI 线索功能需要后端服务，请在正式部署环境使用。'
+          + '界面、量表、讲评统计都是真实内容，可以先看效果。');
+  }, true);
+})();
+</script>
+
+</body>
+</html>

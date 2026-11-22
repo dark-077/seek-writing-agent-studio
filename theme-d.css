@@ -1,0 +1,672 @@
+/* ══════════════════════════════════════════════════════════════
+   方案 D · 组合版视觉（2026-11-22 定稿）
+   --------------------------------------------------------------
+   来源：B 的配色（品牌蓝 #2563EB）+ 左侧栏 216px 三组导航
+         + C 的紧凑表单 + C 的 Rubric 表格式 + C 的 sticky footer
+
+   做法：用变量先统一色板（原样式大量使用 var()，改变量即可大面积生效），
+         再针对性覆盖侧栏/导航/卡片/表单项/装饰。
+
+   三个残留的修法：
+     ① 最外围固定边框 → .main-content::before 的 3px 金边去掉
+     ② 白色悬浮胶囊块 → .nav-item 改成扁平 + 左侧竖条
+     ③ 主按钮被截断   → 移到页面级 .sticky-footer，不再塞在 rubric 面板里
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #F5F7FA;
+  --panel: #FFFFFF;
+  --ink: #1F2937;
+  --muted: #6B7280;
+  --primary: #2563EB;
+  --primary-dark: #1D4ED8;
+  --accent: #2563EB;
+  --line: #E5E7EB;
+  --soft: #F3F4F6;
+  --success: #059669;
+  --warning: #B45309;
+
+  --d-line-2: #F3F4F6;
+  --d-text-2: #4B5563;
+  --d-text-3: #9CA3AF;
+  --d-brand-bg: #EFF4FF;
+  --d-r-card: 8px;
+  --d-r-ctl: 6px;
+  --d-side: 216px;
+}
+
+/* ── 底色：去掉渐变、网格、彩球 ─────────────────────────── */
+body {
+  background: var(--bg) !important;
+  color: var(--ink);
+  font-size: 13px;
+  font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB",
+               "Source Han Sans SC", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 布局：侧栏 216px ────────────────────────────────────── */
+.app-shell {
+  grid-template-columns: var(--d-side) minmax(0, 1fr);
+}
+
+/* ── 侧栏：纯白 + 细右框 ────────────────────────────────── */
+.sidebar {
+  background: #fff !important;
+  border-right: 1px solid var(--line) !important;
+  box-shadow: none !important;
+  color: var(--ink);
+  padding: 16px 0 14px !important;
+  gap: 0 !important;
+}
+
+.sidebar .brand {
+  padding: 0 18px 14px !important;
+  margin-bottom: 4px;
+  border-radius: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--d-line-2) !important;
+  box-shadow: none !important;
+}
+.sidebar .brand h1 {
+  font-size: 17px !important;
+  letter-spacing: .05em;
+  color: var(--primary) !important;
+  line-height: 1.3;
+}
+.sidebar .brand p {
+  margin: 1px 0 0 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  color: var(--d-text-3) !important;
+}
+
+/* 导航：扁平，左侧竖条表示当前项 */
+.nav-list {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0 !important;
+  padding: 0 !important;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+  padding: 0 18px !important;
+  border: 0 !important;
+  border-left: 2px solid transparent !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--d-text-2) !important;
+  font-size: 13px !important;
+  text-align: left;
+  cursor: pointer;
+  transform: none !important;
+  transition: background .12s, color .12s;
+}
+.nav-item:hover {
+  background: var(--soft) !important;
+  color: var(--ink) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.nav-item.active {
+  background: var(--d-brand-bg) !important;
+  border-left-color: var(--primary) !important;
+  color: var(--primary) !important;
+  font-weight: 600;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 图标：去掉彩色圆球，做成细小灰字符 */
+.nav-icon {
+  width: 15px !important;
+  height: auto !important;
+  margin-right: 9px !important;
+  display: inline-block !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--d-text-3) !important;
+  font-weight: 400 !important;
+  font-size: 13px;
+  text-align: center;
+}
+.nav-item.active .nav-icon { color: var(--primary) !important; }
+/* 清掉原来给每个图标配的彩色底 */
+.nav-item:nth-child(n) .nav-icon { background: none !important; }
+
+.nav-group-label {
+  margin: 14px 0 4px !important;
+  padding: 0 18px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: .05em;
+  color: var(--d-text-3) !important;
+  text-transform: none;
+}
+.nav-group-label:first-child { margin-top: 4px !important; }
+
+/* 纯装饰：全部去掉 */
+.detective-figure,
+.tool-stickers { display: none !important; }
+
+.sidebar-note {
+  margin: auto 14px 0 !important;
+  padding: 12px 0 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  border-top: 1px solid var(--d-line-2) !important;
+}
+.sidebar-note span {
+  font-size: 11px !important;
+  letter-spacing: .04em !important;
+  color: var(--d-text-3) !important;
+  text-transform: none !important;
+}
+.sidebar-note strong {
+  margin-top: 4px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.6 !important;
+  color: var(--d-text-3) !important;
+}
+
+/* ── 主内容：无外框、无纹理 ─────────────────────────────── */
+.main-content {
+  background: var(--bg) !important;
+  padding: 0 0 0 !important;
+  overflow: visible !important;
+}
+.main-content::before,
+.main-content::after { content: none !important; display: none !important; }
+
+/* ── 顶部工具条：紧凑 ───────────────────────────────────── */
+.demo-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  height: 56px;
+  padding: 0 24px !important;
+  background: #fff !important;
+  border-bottom: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--ink) !important;
+}
+.demo-toolbar strong {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2, #4B5563);
+}
+.demo-toolbar #stepIndicator {
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--d-text-3);
+}
+.toolbar-actions { display: flex; align-items: center; gap: 6px; }
+
+.ghost-btn,
+.print-btn {
+  height: 28px !important;
+  padding: 0 10px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--d-r-ctl) !important;
+  background: #fff !important;
+  color: var(--d-text-2) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+.ghost-btn:hover,
+.print-btn:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: #fff !important;
+}
+
+/* ── 页面容器 ───────────────────────────────────────────── */
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 20px 24px 24px !important;
+}
+.page::after,
+.page::before { content: none !important; display: none !important; }
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+.page-header h2 {
+  margin: 2px 0 0 !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+  letter-spacing: -.01em;
+  color: var(--ink) !important;
+}
+.eyebrow {
+  margin: 0 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--d-text-3) !important;
+}
+
+.badge {
+  padding: 3px 10px !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--line) !important;
+  background: var(--soft) !important;
+  color: var(--d-text-2) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+.badge.warning {
+  background: #FFFBEB !important;
+  border-color: #FDE68A !important;
+  color: var(--warning) !important;
+}
+
+/* ── 步骤条：扁平，非药丸 ───────────────────────────────── */
+.lesson-flow {
+  display: flex !important;
+  align-items: center;
+  gap: 2px !important;
+  margin: 0 0 16px !important;
+  padding: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  flex-wrap: wrap;
+}
+.flow-item {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px !important;
+  border-radius: 4px !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-size: 11.5px !important;
+  color: var(--d-text-3) !important;
+}
+.flow-item b {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--d-text-3);
+  box-shadow: none !important;
+}
+.flow-item.active {
+  background: var(--d-brand-bg) !important;
+  color: var(--primary) !important;
+  font-weight: 600;
+}
+.flow-item.active b {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* ── 卡片 ───────────────────────────────────────────────── */
+.panel-grid { gap: 14px !important; }
+.panel-grid.two-cols {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) !important;
+}
+.panel {
+  padding: 0 !important;
+  border-radius: var(--d-r-card) !important;
+  border: 1px solid var(--line) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+.panel h3 {
+  margin: 0 !important;
+  padding: 0 16px !important;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: var(--ink) !important;
+  border-bottom: 1px solid var(--d-line-2) !important;
+  background: #FCFCFD !important;
+}
+.panel h3::before {
+  content: "";
+  width: 3px;
+  height: 13px;
+  border-radius: 2px;
+  background: var(--primary);
+}
+/* 卡片内容区留白 */
+.panel > label,
+.panel > select,
+.panel > .frow { padding-left: 16px !important; padding-right: 16px !important; }
+.panel > label:first-of-type { margin-top: 14px !important; }
+.panel > .rubric-list,
+.panel > .rubric-total { margin-left: 16px !important; margin-right: 16px !important; }
+
+/* ── 紧凑表单（方案 C）：左标签 + 右控件 ────────────────── */
+.frow {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin: 0 !important;
+  padding: 7px 16px !important;
+  border-top: 1px solid var(--d-line-2);
+}
+.frow:first-of-type { border-top: 0; padding-top: 14px !important; }
+.frow:last-of-type { padding-bottom: 16px !important; }
+.frow > label {
+  display: block !important;
+  margin: 0 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  color: var(--d-text-2) !important;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* 表单控件统一 */
+.panel select,
+.panel input[type="text"],
+.panel textarea {
+  width: 100% !important;
+  height: 34px !important;
+  margin: 0 !important;
+  padding: 0 10px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--d-r-ctl) !important;
+  background: #fff !important;
+  color: var(--ink) !important;
+  font-size: 12.5px !important;
+  box-shadow: none !important;
+}
+.panel select:focus,
+.panel input[type="text"]:focus,
+.panel textarea:focus {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .12) !important;
+}
+
+/* 没有 .frow 包裹的老式 label（其它页面）保持体面 */
+.panel > label {
+  display: block !important;
+  margin: 12px 0 5px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--d-text-2) !important;
+}
+.panel > select { margin-bottom: 10px !important; }
+
+/* ── Rubric：表格式 + 权重条 ──────────────────────────────
+   注意：原来 .wave-rubric strong 是 36×36 的彩色圆球
+        （蓝/绿/紫/粉，靠 nth-child 换色），字母白色 20px。
+   一旦把行改成紧凑栅格，圆球就会溢出格子压住维度名，
+   而且白字在彩底上对比度极低。这里整段废掉圆球，字母改成普通小字。
+   全部用 !important 是为了压过 .wave-rubric div:nth-child(n) strong
+   这类带伪类的选择器。
+   ──────────────────────────────────────────────────────────── */
+.rubric-framework {
+  margin: 0 !important;
+  padding: 10px 16px 0 !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  color: var(--d-text-3) !important;
+}
+.rubric-note {
+  margin: 6px 16px 0 !important;
+  padding: 7px 10px !important;
+  border-radius: var(--d-r-ctl) !important;
+  background: #FFFBEB !important;
+  border: 1px solid #FDE68A !important;
+  color: var(--warning) !important;
+  font-size: 11.5px !important;
+}
+
+/* 列表本身：不再用 gap，靠每行下边框分隔 */
+.rubric-list {
+  display: block !important;
+  gap: 0 !important;
+  margin-top: 8px !important;
+  padding: 0 !important;
+  border-top: 1px solid var(--line) !important;
+}
+
+/* 每一行：四列 = 字母 | 维度名 | 权重条 | 分值；去掉方块边框与圆角 */
+.rubric-list > div,
+.rubric-list div,
+.wave-rubric div {
+  display: grid !important;
+  grid-template-columns: 18px minmax(0, 1fr) 56px 34px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--d-line-2) !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+.rubric-list > div:last-child,
+.rubric-list div:last-child { border-bottom: 0 !important; }
+
+/* 维度字母：废掉彩色圆球，改成普通小字 */
+.rubric-list > div > strong,
+.rubric-list div > strong,
+.wave-rubric strong,
+.wave-rubric div:nth-child(1) strong,
+.wave-rubric div:nth-child(2) strong,
+.wave-rubric div:nth-child(3) strong,
+.wave-rubric div:nth-child(4) strong {
+  grid-column: 1 !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  display: inline-block !important;
+  place-items: initial !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--primary) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+}
+
+/* 维度名 */
+.rubric-list > div > span,
+.rubric-list span,
+.wave-rubric span {
+  grid-column: 2 !important;
+  display: block !important;
+  min-width: 0 !important;
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+  color: var(--ink) !important;
+  line-height: 1.5 !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* 权重条：长度 = 该维分值 / 单维满分（--w 由行内样式控制，默认满格） */
+.rubric-list > div::after,
+.rubric-list div::after {
+  content: "" !important;
+  grid-column: 3 !important;
+  justify-self: start !important;
+  width: calc(var(--w, 100) * 1%) !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+  background: var(--primary) !important;
+  opacity: .7;
+}
+
+/* 分值 */
+.rubric-list > div > b,
+.rubric-list b,
+.wave-rubric b {
+  grid-column: 4 !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  color: var(--d-text-2) !important;
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 总分条 */
+.rubric-total {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 16px 16px !important;
+  padding: 9px 12px !important;
+  border-radius: var(--d-r-ctl) !important;
+  background: var(--d-brand-bg) !important;
+  border: 0 !important;
+  color: var(--primary-dark) !important;
+  font-size: 12px !important;
+}
+.rubric-total span { font-size: 12px !important; font-weight: 500 !important; }
+.rubric-total b {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--primary) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 按钮 ───────────────────────────────────────────────── */
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--primary) !important;
+  border-radius: var(--d-r-ctl) !important;
+  background: var(--primary) !important;
+  color: #fff !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .12s;
+}
+.primary-btn:hover {
+  background: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+}
+.primary-btn.wide { width: 100%; }
+
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px !important;
+  padding: 0 14px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--d-r-ctl) !important;
+  background: #fff !important;
+  color: var(--d-text-2) !important;
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+.secondary-btn:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+/* ── 页面级 sticky footer（替代塞在面板里的主按钮）──────── */
+.sticky-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 11px 24px;
+  background: rgba(255, 255, 255, .96);
+  border-top: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+}
+.sticky-footer .stat {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11.5px;
+  color: var(--d-text-3);
+}
+.sticky-footer .stat b {
+  color: var(--d-text-2);
+  font-weight: 600;
+}
+.sticky-footer .acts { display: flex; gap: 8px; }
+
+/* ── 窄屏回归（教师端以电脑为主，这里只保证不崩）───────── */
+@media (max-width: 900px) {
+  .app-shell { grid-template-columns: minmax(0, 1fr) !important; }
+  .sidebar {
+    position: relative !important;
+    height: auto !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-list { flex-direction: row !important; flex-wrap: wrap; padding: 0 10px 8px !important; }
+  .nav-item { width: auto !important; border-left: 0 !important; border-bottom: 2px solid transparent !important; }
+  .nav-item.active { border-bottom-color: var(--primary) !important; }
+  .nav-group-label { width: 100%; }
+  .panel-grid.two-cols { grid-template-columns: minmax(0, 1fr) !important; }
+  .page { padding: 14px !important; }
+  .demo-toolbar { padding: 0 14px !important; height: 48px; }
+  .frow { grid-template-columns: 70px minmax(0, 1fr); }
+  .sticky-footer { padding: 10px 14px; }
+  .sticky-footer .stat { display: none; }
+  .sticky-footer .acts { width: 100%; }
+  .sticky-footer .primary-btn { flex: 1; }
+}
+
+/* 侧栏里的「外部页面」导航项（课堂讲评）是 <a>，去掉下划线并继承按钮样式 */
+a.nav-item {
+  text-decoration: none;
+  box-sizing: border-box;
+}
+a.nav-item.nav-external .nav-icon { color: inherit; }

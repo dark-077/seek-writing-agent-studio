@@ -1,0 +1,177 @@
+{
+ "ok": true,
+ "empty": false,
+ "rubricId": "wave-biography",
+ "framework": "WAVE",
+ "generatedAt": null,
+ "sample": {
+  "records": 36,
+  "uniqueEssays": 17,
+  "withClues": 36
+ },
+ "score": {
+  "avg": 53.0,
+  "max": 87.0,
+  "min": 29.5,
+  "scored": 17,
+  "bands": {
+   "excellent": 1,
+   "good": 2,
+   "pass": 13,
+   "low": 1
+  }
+ },
+ "errorTypes": [
+  {
+   "name": "主谓一致",
+   "count": 6,
+   "examples": [
+    "who inspire me",
+    "Yuan long ping want to do something"
+   ]
+  },
+  {
+   "name": "时态错误",
+   "count": 4,
+   "examples": [
+    "My dad saw me and ask me what was wrong.",
+    "Then he run with me every evening after diner."
+   ]
+  },
+  {
+   "name": "中式英语",
+   "count": 3,
+   "examples": [
+    "He helps the global be protected from hungry.",
+    "My elderly brother"
+   ]
+  },
+  {
+   "name": "连词/句子结构",
+   "count": 2,
+   "examples": [
+    "In my mind,has a person stay my brain always.",
+    "I became more confidence"
+   ]
+  },
+  {
+   "name": "介词误用",
+   "count": 2,
+   "examples": [
+    "I will introduce him for you to learn",
+    "shout me"
+   ]
+  }
+ ],
+ "languageErrorTotal": 25,
+ "dimensions": [
+  {
+   "key": "A",
+   "nameZh": "动作表达",
+   "name": "Actions",
+   "max": 25,
+   "avg": 12.94,
+   "min": 9.0,
+   "max_": 22.0,
+   "n": 17
+  },
+  {
+   "key": "E",
+   "nameZh": "个人与社会影响",
+   "name": "Echo",
+   "max": 25,
+   "avg": 13.03,
+   "min": 7.0,
+   "max_": 22.0,
+   "n": 17
+  },
+  {
+   "key": "W",
+   "nameZh": "人称与视角",
+   "name": "Who",
+   "max": 25,
+   "avg": 13.29,
+   "min": 6.0,
+   "max_": 22.0,
+   "n": 17
+  },
+  {
+   "key": "V",
+   "nameZh": "价值立意",
+   "name": "Values",
+   "max": 25,
+   "avg": 13.71,
+   "min": 7.5,
+   "max_": 21.0,
+   "n": 17
+  }
+ ],
+ "weakestDimension": "A",
+ "contentCluesByDim": {
+  "W": 11,
+  "A": 14,
+  "V": 10,
+  "E": 14
+ },
+ "badSentences": [
+  {
+   "type": "主谓一致",
+   "snippet": "Yuan long ping want to do something"
+  },
+  {
+   "type": "时态错误",
+   "snippet": "My dad saw me and ask me what was wrong."
+  },
+  {
+   "type": "时态错误",
+   "snippet": "Then he run with me every evening after diner."
+  },
+  {
+   "type": "中式英语",
+   "snippet": "He helps the global be protected from hungry."
+  },
+  {
+   "type": "连词/句子结构",
+   "snippet": "In my mind,has a person stay my brain always."
+  },
+  {
+   "type": "介词误用",
+   "snippet": "I will introduce him for you to learn"
+  }
+ ],
+ "goodSentences": [
+  {
+   "score": 87.0,
+   "snippet": "Ms Lin, my former English teacher, is a person who inspires me."
+  },
+  {
+   "score": 87.0,
+   "snippet": "She began working at a small town school in 2008."
+  },
+  {
+   "score": 87.0,
+   "snippet": "At that time, there were few English books, and many students thought English was difficult."
+  },
+  {
+   "score": 87.0,
+   "snippet": "She collected books from friends and stayed after school every Friday to read with us."
+  },
+  {
+   "score": 87.0,
+   "snippet": "Once, I wanted to leave because I could not understand a story."
+  },
+  {
+   "score": 87.0,
+   "snippet": "She explained difficult words and waited patiently while I tried again."
+  },
+  {
+   "score": 87.0,
+   "snippet": "Some students were afraid of making mistakes, so she encouraged them to read in pairs."
+  },
+  {
+   "score": 87.0,
+   "snippet": "Her willingness to spend extra time helping us showed her patience and responsibility."
+  }
+ ],
+ "goodSentenceSource": "heuristic"
+}
